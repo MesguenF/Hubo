@@ -30,8 +30,11 @@ def sFGetCompleteFilenameDirectory(directory, file_begin ):
 	#If file found
 	# Look if a file like that exists in the directory
 	for file in available_files:
-		if( file[:begin_length] == file_begin ):
-			result_file = (directory + file)
+		if( file[:begin_length] == file_begin):
+			if(directory + file == directory + "c_010.manifest"):
+				result_file = "ERROR"
+			else:
+				result_file = (directory + file)
 			break
 	
 	print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN " + result_file)

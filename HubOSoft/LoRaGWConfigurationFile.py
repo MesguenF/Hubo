@@ -53,7 +53,7 @@ def get_all_entry_and_create_JSON():
     
     #Variables to receive the entries of interface 
     VersionGW = IHM.VersionLoRaGWConfigFile_entry.get()
-    LanIPFixe = IHM.variable_LANIPFixe_entry.get()                                              
+    LanIPFixe = IHM.variable_LANIPFixe_entry.get()                                        
     LanIPAdrr = IHM.variable_LANIPAddr_entry.get()                                             
     LanIPMask = IHM.variable_LANIPMask_entry.get()                                                  
     LanIPGw = IHM.variable_LANIPGw_entry.get()                                                                             

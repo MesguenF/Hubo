@@ -22,4 +22,4 @@ JSON_LINK_START_NAME = 'corresp_'
 EMPTY_JSON_DICT_LINK_FILE = {JSON_LINK_OBJ_NAME: {JSON_LINK_TAB_NAME: []}}
 
 # Default name for Link file
-DEFAULT_LINK_FILE_NAME = 'default'
+DEFAULT_LINK_FILE_NAME = 'file'

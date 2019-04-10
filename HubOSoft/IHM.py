@@ -56,15 +56,6 @@ def get_dir_name_config():
 def get_dir_name_data():
     return DIR_NAME_DATA
 
-# #To return Configuration directory state
-# def get_dir_config_state():
-#     return bool_config_directory
-#  
-# #To return Data directory state
-# def get_dir_data_state():
-#     return bool_data_directory
-
-
 # To create configuration of DATA folder ( folder LOGS + index.php)
 def create_data_sub_folder_and_index(server_directory):
     #To create Logs folder
@@ -75,13 +66,6 @@ def create_data_sub_folder_and_index(server_directory):
     f = open(server_directory + 'index.php', 'w')
     f.writelines(INDEX_JSON_LIST)
     f.close()
-    
-# To create configuration of CONFIG folder ( folder Manifest)
-def create_config_sub_folder_manifest(server_directory):
-    #To create Manifest folder
-    path_directory = server_directory + "Manifest"
-    if os.path.exists(path_directory) is False:
-        os.mkdir(path_directory)
     
 #To ask Configuration directory and configure config directory   
 def ask_ConfigFolder_Directory():
@@ -95,7 +79,6 @@ def ask_ConfigFolder_Directory():
         DIR_NAME_CONFIG = ((filedialog.askdirectory(title = "SELECTION DOSSIER DES CONFIGURATIONS", initialdir = DIR_NAME_CONFIG)) + "/").replace("/","\\")
         if(DIR_NAME_CONFIG != ""):
             bool_config_directory = True
-            create_config_sub_folder_manifest(DIR_NAME_CONFIG)
             messagebox.showinfo(title="Information", message="Le dossier pour les configurations est le suivant :" + DIR_NAME_CONFIG)
         else:
             bool_config_directory = False
@@ -109,20 +92,16 @@ def ask_ConfigFolder_Directory():
             if(temp != ""):
                 DIR_NAME_CONFIG = temp
                 bool_config_directory = True
-                create_config_sub_folder_manifest(DIR_NAME_CONFIG)
                 messagebox.showinfo(title="Information", message="Le dossier pour les configurations est le suivant :" + DIR_NAME_CONFIG)
             else:
                 messagebox.showinfo(title="Information", message="Le dossier pour les configurations n'a pas été modifié.\nLe dossier pour les configurations est le suivant :" + DIR_NAME_CONFIG)
     
+    # To initialyse bool_data_directory
     if(DIR_NAME_DATA == ""):
         bool_data_directory = False
-              
+    # To enable access if OK          
     change_entry_access(bool_config_directory,bool_data_directory)
-#     print("TEST DIR_NAME_CONFIG:" + DIR_NAME_CONFIG)
-#     print("TEST DIR_NAME_DATA:" + DIR_NAME_DATA)
-#     print("bool_config_directory:",bool_config_directory)
-#     print("TEST CONFIG AND DATA:" ,(bool_config_directory == True) and (bool_data_directory == True))
-  
+
 #To ask Data directory and configure directory
 def ask_DataFolder_Directory():
     global DIR_NAME_CONFIG
@@ -140,8 +119,6 @@ def ask_DataFolder_Directory():
                           
         else:
             bool_data_directory = False
-#             print("TEST DIR_NAME_DATA:" + DIR_NAME_DATA)
-#             print("TEST DIR_NAME_CONFIG:" + DIR_NAME_CONFIG)
             messagebox.showinfo(title="Information", message="Le dossier pour les données n'est pas défini!", icon = 'warning')
     
     #If directory exist
@@ -157,14 +134,11 @@ def ask_DataFolder_Directory():
             else:
                 messagebox.showinfo(title="Information", message="Le dossier pour les configurations n'a pas été modifié.\n Le dossier pour les configurations est le suivant :" + DIR_NAME_DATA)
     
+    # To initialyse bool_config_directory
     if(DIR_NAME_CONFIG == ""):
         bool_config_directory = False
-              
+    # To enable access if OK          
     change_entry_access(bool_config_directory,bool_data_directory)
-#     print("TEST DIR_NAME_CONFIG:" + DIR_NAME_CONFIG)
-#     print("TEST DIR_NAME_DATA:" + DIR_NAME_DATA)
-#     print("bool_data_directory:",bool_data_directory)
-#     print("TETS CONFIG AND DATA:" ,(bool_config_directory == True) and (bool_data_directory == True))
     
 #To allow or deny entries access   
 def change_entry_access(bool1,bool2):
@@ -172,10 +146,9 @@ def change_entry_access(bool1,bool2):
         changeStateAllEntry = NORMAL
     else:
         changeStateAllEntry = DISABLED
-    
-    ##########################o1#########################
+    ########################## part o1 of IHM #########################
     VersionLoRaGWConfigFile_entry.config(state=changeStateAllEntry)
-    LANIPFixe_entry.config(state=changeStateAllEntry)
+    LANIPFixeCombo.config(state=changeStateAllEntry)
     LANIPAddr_entry.config(state=changeStateAllEntry)
     LANIPMask_entry.config(state=changeStateAllEntry)
     LANIPGw_entry.config(state=changeStateAllEntry)
@@ -203,12 +176,12 @@ def change_entry_access(bool1,bool2):
     SERVICEFTPSPort_entry.config(state=changeStateAllEntry)
     SERVICEFTPSUser_entry.config(state=changeStateAllEntry)
     SERVICEFTPSPwd_entry.config(state=changeStateAllEntry)
-    DEBUGSSHServer_entry.config(state=changeStateAllEntry)
+    DEBUGSSHServerCombo.config(state=changeStateAllEntry)
     DEBUGSSHPort_entry.config(state=changeStateAllEntry)
     DEBUGLogLevel_entry.config(state=changeStateAllEntry)
-    DEBUGWatchDog_entry.config(state=changeStateAllEntry)
-    DEBUGLogUpload_entry.config(state=changeStateAllEntry)
-    ##########################o2#########################
+    #DEBUGWatchDog_entry.config(state=changeStateAllEntry)
+    DEBUGLogUploadCombo.config(state=changeStateAllEntry)
+    ########################## part o2 of IHM #########################
     VersionLoRaGWAllowedEndDevFile_entry.config(state=changeStateAllEntry)
     ENDDeviceIDDevEUI_entry.config(state=changeStateAllEntry)
     ENDDeviceIDDevAddr_entry.config(state=changeStateAllEntry)
@@ -218,7 +191,7 @@ def change_entry_access(bool1,bool2):
 #     OTAFieldsAppKey_entry.config(state=changeStateAllEntry)
 #     ABPFieldsNwkSKey_entry.config(state=changeStateAllEntry)
 #     ABPFieldsAppSKey_entry.config(state=changeStateAllEntry)
-    ##########################o2#########################  
+    ##########################  part o2 of IHM #########################  
     VersionLoRaEndDeviceConfigFile_entry.config(state=changeStateAllEntry)
     ENDDEVICEIDDevEUI_entry.config(state=changeStateAllEntry)
     MACInfoFPort_entry.config(state=changeStateAllEntry)
@@ -226,17 +199,14 @@ def change_entry_access(bool1,bool2):
     ALARMINFOIsAlarm_entry.config(state=changeStateAllEntry)
     ALARMINFORegEx_entry.config(state=changeStateAllEntry)
     ALARMINFOActOnAlarm_entry.config(state=changeStateAllEntry)
-    ##########################o2#########################
-
-# To display alert
+    
+# To display alert configuration
 def show_Info_Folders(event):
     if((DIR_NAME_CONFIG == "") or (DIR_NAME_DATA == "")):
         messagebox.showinfo(title="Information", message="Les dossiers pour les CONFIGURATIONS et/ou  pour les DONNEES ne sont pas configurés!\n Veuillez sélectionner ces dossiers pour continuer!")
 
 # To display a window with the folders directory
 def show_Folders():
-#     global DIR_NAME_CONFIG
-#     global DIR_NAME_DATA
     TEXT ="Non défini"
                    
     if(DIR_NAME_CONFIG == ""):
@@ -252,12 +222,13 @@ def show_Folders():
     messagebox.showinfo(title="Information", message="\nChemin des configurations =  " + text_directory_config + "\nChemin des données = " + text_directory_data)
 
 
-# To display a window to ask if exit
+# To display a window to ask to exit the program
 def ask_OK_Cancel():
     test_exit = messagebox.askokcancel(title="Confirmation", message="Vous allez quitter le logiciel,\n veuillez confirmer !", icon = 'question')
     if(test_exit):
         mainWindow.destroy()
-        
+
+# NOT OK       
 def show_OTA():
     OTAFieldsAppEUI_entry.config(state=NORMAL)
     OTAFieldsAppKey_entry.config(state=NORMAL)
@@ -266,7 +237,8 @@ def show_OTA():
     ABPFieldsAppSKey_entry.selection_clear()
     ABPFieldsNwkSKey_entry.config(state=DISABLED)
     ABPFieldsAppSKey_entry.config(state=DISABLED)
- 
+
+# NOT OK
 def show_ABP():
     ABPFieldsNwkSKey_entry.config(state=NORMAL)
     ABPFieldsAppSKey_entry.config(state=NORMAL)
@@ -294,10 +266,12 @@ def get_GWConfigFile():
     print(chaine)
     # example command : make-manifest.exe --type CFG --file c_010_0000.json     
     os.system(chaine)
-    
+
+# To create a EndDeviceConfig file Json   NOT FINISH
 def get_EndDeviceConfigFile():
     messagebox.showinfo(title="Information", message="TEST BOUTON END DEVICE CONFIG FILE")
-    
+
+# To create a allowedEndDevice file Json    NOT FINISH
 def get_GWAllowedEndDeviceFile():
     messagebox.showinfo(title="Information", message="TEST BOUTON GW ALLOWED END DEVICE FILE")
     conf_file = get_AllowedEndDevice_File(get_dir_name_config())
@@ -342,44 +316,44 @@ Label(o1, text='Lora_GW_Configuration_File:').place(x=20, y=5)
 Label(o1, text='Version:').place(x=70, y=25)
 VersionLoRaGWConfigFile_entry = Entry(o1, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 VersionLoRaGWConfigFile_entry.place(x=120, y=25)
-"""Mémorise un flottant; sa valeur par défaut est 0.0 """
-variable_VersionLoRaGWConfigFile_entry = StringVar()                    
+variable_VersionLoRaGWConfigFile_entry = StringVar()  
+variable_VersionLoRaGWConfigFile_entry.set("02.00")            
 VersionLoRaGWConfigFile_entry.config(textvariable=variable_VersionLoRaGWConfigFile_entry, state=changeStateAllEntry, cursor= type_cursor)
-bal.bind_widget(VersionLoRaGWConfigFile_entry, msg="ex: 01.00")
+bal.bind_widget(VersionLoRaGWConfigFile_entry, msg="02.00 par défaut")
 
 ##############################################
 Label(o1, text='Lan:').place(x=70, y=40)
   
 Label(o1, text='IPFixe:').place(x=100, y=55)
-LANIPFixe_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
-LANIPFixe_entry.place(x=170, y=55)
-variable_LANIPFixe_entry = StringVar()
-LANIPFixe_entry.config(textvariable=variable_LANIPFixe_entry, state=changeStateAllEntry, cursor=type_cursor )
-bal.bind_widget(LANIPFixe_entry, msg="True / False")            
+# Liste déroulante
+variable_LANIPFixe_entry = BooleanVar()        # Variable de type str associée à la valeur affichée dans la liste
+LANIPFixeCombo = ttk.Combobox(o1, textvariable=variable_LANIPFixe_entry, state=changeStateAllEntry, cursor=type_cursor)
+LANIPFixeCombo.place(x=170, y=55)
+#LANIPFixeCombo.config(textvariable=variable_LANIPAddr_entry, state=changeStateAllEntry, cursor=type_cursor)
+LANIPFixeCombo['values'] = ('true', 'false')    # Liste des valeurs de la liste
+LANIPFixeCombo.current(1)                                        # Choix de la valeur courante
+#LANIPFixeCombo.bind('<<ComboboxSelected>>', choixLD)    # Action déclenchée par une sélection dans la liste 
 
-
-   
 Label(o1, text='IPAddr:').place(x=100, y=75)
 LANIPAddr_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 LANIPAddr_entry.place(x=170, y=75)
-"""Mémorise une chaîne de caractères; sa valeur par défaut est '' """
 variable_LANIPAddr_entry = StringVar()
 LANIPAddr_entry.config(textvariable=variable_LANIPAddr_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(LANIPAddr_entry, msg="_._._._") 
+bal.bind_widget(LANIPAddr_entry, msg="exemple : 192.168.4.192") 
    
 Label(o1, text='IPMask:').place(x=100, y=95)
 LANIPMask_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 LANIPMask_entry.place(x=170, y=95)
 variable_LANIPMask_entry = StringVar()
 LANIPMask_entry.config(textvariable=variable_LANIPMask_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(LANIPMask_entry, msg="_._._._")  
+bal.bind_widget(LANIPMask_entry, msg="exemple : 255.255.255.0")  
        
 Label(o1, text='IPGw:').place(x=100, y=115)
 LANIPGw_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 LANIPGw_entry.place(x=170, y=115)
 variable_LANIPGw_entry = StringVar()
 LANIPGw_entry.config(textvariable=variable_LANIPGw_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(LANIPGw_entry, msg="_._._._")
+bal.bind_widget(LANIPGw_entry, msg="192.168.4.1")
         
 #############################################
 Label(o1, text='Wwan:').place(x=370, y=40)
@@ -389,42 +363,43 @@ WWANPIN_entry = Entry(o1, width=25, disabledbackground=color_disabled_background
 WWANPIN_entry.place(x=490, y=55)
 variable_WWANPIN_entry = StringVar()
 WWANPIN_entry.config(textvariable=variable_WWANPIN_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(WWANPIN_entry, msg="Message")
+bal.bind_widget(WWANPIN_entry, msg="")
         
 Label(o1, text='PUK:').place(x=420, y=75)
 WWANPUK_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 WWANPUK_entry.place(x=490, y=75)
 variable_WWANPUK_entry = StringVar()
 WWANPUK_entry.config(textvariable=variable_WWANPUK_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(WWANPUK_entry, msg="Message")
+bal.bind_widget(WWANPUK_entry, msg="")
         
 Label(o1, text='IPType:').place(x=420, y=95)
 WWANIPType_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 WWANIPType_entry.place(x=490, y=95)
 variable_WWANIPType_entry = StringVar()
+variable_WWANIPType_entry.set("IP")
 WWANIPType_entry.config(textvariable=variable_WWANIPType_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(WWANIPType_entry, msg="Message")
+bal.bind_widget(WWANIPType_entry, msg="IP par défaut")
        
 Label(o1, text='APN:').place(x=420, y=115)
 WWANAPN_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 WWANAPN_entry.place(x=490, y=115)
 variable_WWANAPN_entry = StringVar()
 WWANAPN_entry.config(textvariable=variable_WWANAPN_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(WWANAPN_entry, msg="Message")
+bal.bind_widget(WWANAPN_entry, msg="")
        
 Label(o1, text='APNUser:').place(x=420, y=135)
 WWANAPNUser_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 WWANAPNUser_entry.place(x=490, y=135)
 variable_WWANAPNUser_entry = StringVar()
 WWANAPNUser_entry.config(textvariable=variable_WWANAPNUser_entry , state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(WWANAPNUser_entry, msg="Message")
+bal.bind_widget(WWANAPNUser_entry, msg="")
         
 Label(o1, text='APNPwd:').place(x=420, y=155)
 WWANAPNPwd_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 WWANAPNPwd_entry.place(x=490, y=155)
 variable_WWANAPNPwd_entry = StringVar()
 WWANAPNPwd_entry.config(textvariable=variable_WWANAPNPwd_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(WWANAPNPwd_entry, msg="Message")
+bal.bind_widget(WWANAPNPwd_entry, msg="")
        
 #############################################
 Label(o1, text='Time:').place(x=70, y=175)
@@ -433,15 +408,17 @@ Label(o1, text='SNTPServer:').place(x=100, y=190)
 TIMESNTPServer_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 TIMESNTPServer_entry.place(x=180, y=190)
 variable_TIMESNTPServer_entry = StringVar()
+variable_TIMESNTPServer_entry.set("time.nist.gov")
 TIMESNTPServer_entry.config(textvariable=variable_TIMESNTPServer_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(TIMESNTPServer_entry, msg="Message")
+bal.bind_widget(TIMESNTPServer_entry, msg="time.nist.gov par défaut")
        
 Label(o1, text='TimeZone:').place(x=100, y=210)
 TIMETimeZone_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 TIMETimeZone_entry.place(x=180, y=210)
 variable_TIMETimeZone_entry = StringVar()
+variable_TIMETimeZone_entry.set("Europe/Paris")
 TIMETimeZone_entry.config(textvariable=variable_TIMETimeZone_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(TIMETimeZone_entry, msg="Message")
+bal.bind_widget(TIMETimeZone_entry, msg="Europe/Paris par défaut")
         
 #############################################
 Label(o1, text='Service:').place(x=70, y=240)
@@ -450,160 +427,174 @@ Label(o1, text='DNSServer:').place(x=100, y=260)
 SERVICEDNSServer_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEDNSServer_entry.place(x=180, y=260)
 variable_SERVICEDNSServer_entry = StringVar()
+variable_SERVICEDNSServer_entry.set("8.8.8.8")
 SERVICEDNSServer_entry.config(textvariable=variable_SERVICEDNSServer_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEDNSServer_entry, msg="Message")
+bal.bind_widget(SERVICEDNSServer_entry, msg="8.8.8.8 par défaut")
         
 Label(o1, text='PFSUrl:').place(x=100, y=280)
 SERVICEPFSUrl_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEPFSUrl_entry.place(x=180, y=280)
 variable_SERVICEPFSUrl_entry = StringVar()
 SERVICEPFSUrl_entry.config(textvariable=variable_SERVICEPFSUrl_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEPFSUrl_entry, msg="Message")
+bal.bind_widget(SERVICEPFSUrl_entry, msg="exemple : https://192.168.4.3")
        
 Label(o1, text='PFSPort:').place(x=100, y=300)
 SERVICEPFSPort_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEPFSPort_entry.place(x=180, y=300)
-"""Mémorise un entier; sa valeur par défaut est 0 """
 variable_SERVICEPFSPort_entry = IntVar()
+variable_SERVICEPFSPort_entry.set("443")
 SERVICEPFSPort_entry.config(textvariable=variable_SERVICEPFSPort_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEPFSPort_entry, msg="Message")
+bal.bind_widget(SERVICEPFSPort_entry, msg="443 par défaut")
         
 Label(o1, text='PFSUser:').place(x=100, y=320)
 SERVICEPFSUser_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEPFSUser_entry.place(x=180, y=320)
 variable_SERVICEPFSUser_entry = StringVar()
 SERVICEPFSUser_entry.config(textvariable=variable_SERVICEPFSUser_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEPFSUser_entry, msg="Message")
+bal.bind_widget(SERVICEPFSUser_entry, msg="")
         
 Label(o1, text='PFSPwd:').place(x=100, y=340)
 SERVICEPFSPwd_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEPFSPwd_entry.place(x=180, y=340)
 variable_SERVICEPFSPwd_entry = StringVar()
 SERVICEPFSPwd_entry.config(textvariable=variable_SERVICEPFSPwd_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEPFSPwd_entry, msg="Message")
+bal.bind_widget(SERVICEPFSPwd_entry, msg="")
         
 Label(o1, text='PFSDataDirectory:').place(x=100, y=362)
 SERVICEPFSDataDirectory_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEPFSDataDirectory_entry.place(x=280, y=360)
 variable_SERVICEPFSDataDirectory_entry = StringVar()
 SERVICEPFSDataDirectory_entry.config(textvariable=variable_SERVICEPFSDataDirectory_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEPFSDataDirectory_entry, msg="Message")
+bal.bind_widget(SERVICEPFSDataDirectory_entry, msg="")
        
 Label(o1, text='PFSConfigDirectory:').place(x=100, y=380)
 SERVICEPFSConfigDirectory_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEPFSConfigDirectory_entry.place(x=280, y=380)
 variable_SERVICEPFSConfigDirectory_entry = StringVar()
 SERVICEPFSConfigDirectory_entry.config(textvariable=variable_SERVICEPFSConfigDirectory_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEPFSConfigDirectory_entry, msg="Message")
+bal.bind_widget(SERVICEPFSConfigDirectory_entry, msg="")
         
 Label(o1, text='PFSLinkFileName:').place(x=100, y=400)
 SERVICEPFSLinkFileName_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEPFSLinkFileName_entry.place(x=280, y=400)
 variable_SERVICEPFSLinkFileName_entry = StringVar()
+variable_SERVICEPFSLinkFileName_entry.set("corresp_file.json")
 SERVICEPFSLinkFileName_entry.config(textvariable=variable_SERVICEPFSLinkFileName_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEPFSLinkFileName_entry, msg="Message")
+bal.bind_widget(SERVICEPFSLinkFileName_entry, msg="corresp_file.json par défaut")
         
 Label(o1, text='PFSProvisionningFileName:').place(x=100, y=420)
 SERVICEPFSProvisionningFileName_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEPFSProvisionningFileName_entry.place(x=280, y=420)
 variable_SERVICEPFSProvisionningFileName_entry = StringVar()
+variable_SERVICEPFSProvisionningFileName_entry.set("p")
 SERVICEPFSProvisionningFileName_entry.config(textvariable=variable_SERVICEPFSProvisionningFileName_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEPFSProvisionningFileName_entry, msg="Message")
+bal.bind_widget(SERVICEPFSProvisionningFileName_entry, msg="p par défaut")
         
 Label(o1, text='PFSDataFilePeriodMinutes:').place(x=100, y=440)
 SERVICEPFSDataFilePeriodMinutes_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEPFSDataFilePeriodMinutes_entry.place(x=280, y=440)
-"""Mémorise un entier; sa valeur par défaut est 0 """
 variable_SERVICEPFSDataFilePeriodMinutes_entry = IntVar()
+variable_SERVICEPFSDataFilePeriodMinutes_entry.set(1)
 SERVICEPFSDataFilePeriodMinutes_entry.config(textvariable=variable_SERVICEPFSDataFilePeriodMinutes_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEPFSDataFilePeriodMinutes_entry, msg="Message")
+bal.bind_widget(SERVICEPFSDataFilePeriodMinutes_entry, msg="1 par défaut")
         
 Label(o1, text='PFSLinkFilePeriodMinutes:').place(x=100, y=460)
 SERVICEPFSLinkFilePeriodMinutes_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEPFSLinkFilePeriodMinutes_entry.place(x=280, y=460)
-"""Mémorise un entier; sa valeur par défaut est 0 """
 variable_SERVICEPFSLinkFilePeriodMinutes_entry = IntVar()
+variable_SERVICEPFSLinkFilePeriodMinutes_entry.set(1)
 SERVICEPFSLinkFilePeriodMinutes_entry.config(textvariable=variable_SERVICEPFSLinkFilePeriodMinutes_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEPFSLinkFilePeriodMinutes_entry, msg="Message")
+bal.bind_widget(SERVICEPFSLinkFilePeriodMinutes_entry, msg="1 par défaut")
         
 Label(o1, text='EndDeviceSilenceTimeOutHours:').place(x=100, y=480)
 SERVICEEndDeviceSilenceTimeOutHours_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEEndDeviceSilenceTimeOutHours_entry.place(x=280, y=480)
-"""Mémorise un entier; sa valeur par défaut est 0 """
 variable_SERVICEEndDeviceSilenceTimeOutHours_entry = IntVar()
+variable_SERVICEEndDeviceSilenceTimeOutHours_entry.set(25)
 SERVICEEndDeviceSilenceTimeOutHours_entry.config(textvariable=variable_SERVICEEndDeviceSilenceTimeOutHours_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEEndDeviceSilenceTimeOutHours_entry, msg="Message")
+bal.bind_widget(SERVICEEndDeviceSilenceTimeOutHours_entry, msg="25 heures par défaut")
         
 Label(o1, text='FTPSUrl:').place(x=100, y=500)
 SERVICEFTPSUrl_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEFTPSUrl_entry.place(x=180, y=500)
 variable_SERVICEFTPSUrl_entry = StringVar()
 SERVICEFTPSUrl_entry.config(textvariable=variable_SERVICEFTPSUrl_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEFTPSUrl_entry, msg="Message")
+bal.bind_widget(SERVICEFTPSUrl_entry, msg="exemple ftp://192.168.1.27")
         
 Label(o1, text='FTPSPort:').place(x=100, y=520)
 SERVICEFTPSPort_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEFTPSPort_entry.place(x=180, y=520)
-"""Mémorise un entier; sa valeur par défaut est 0 """
 variable_SERVICEFTPSPort_entry = IntVar()
+variable_SERVICEFTPSPort_entry.set(21)
 SERVICEFTPSPort_entry.config(textvariable=variable_SERVICEFTPSPort_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEFTPSPort_entry, msg="Message")
+bal.bind_widget(SERVICEFTPSPort_entry, msg="21 par défaut")
         
 Label(o1, text='FTPSUser:').place(x=100, y=540)
 SERVICEFTPSUser_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEFTPSUser_entry.place(x=180, y=540)
 variable_SERVICEFTPSUser_entry = StringVar()
 SERVICEFTPSUser_entry.config(textvariable=variable_SERVICEFTPSUser_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEFTPSUser_entry, msg="Message")
+bal.bind_widget(SERVICEFTPSUser_entry, msg="Identifiant FTP")
       
 Label(o1, text='FTPSPwd:').place(x=100, y=560)
 SERVICEFTPSPwd_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 SERVICEFTPSPwd_entry.place(x=180, y=560)
 variable_SERVICEFTPSPwd_entry = StringVar()
 SERVICEFTPSPwd_entry.config(textvariable=variable_SERVICEFTPSPwd_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(SERVICEFTPSPwd_entry, msg="Message")
+bal.bind_widget(SERVICEFTPSPwd_entry, msg="Mot de passe FTP")
         
 #############################################
 Label(o1, text='Debug:').place(x=70, y=580)
     
 Label(o1, text='SSHServer:').place(x=100, y=600)
     
-DEBUGSSHServer_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
-DEBUGSSHServer_entry.place(x=180, y=600)
-variable_DEBUGSSHServer_entry = StringVar()
-DEBUGSSHServer_entry.config(textvariable=variable_DEBUGSSHServer_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(DEBUGSSHServer_entry, msg="Message")
+# Liste déroulante
+variable_DEBUGSSHServer_entry = BooleanVar()        # Variable de type str associée à la valeur affichée dans la liste
+DEBUGSSHServerCombo = ttk.Combobox(o1, textvariable=variable_DEBUGSSHServer_entry, state=changeStateAllEntry, cursor=type_cursor)
+DEBUGSSHServerCombo.place(x=180, y=600)
+#LANIPFixeCombo.config(textvariable=variable_LANIPAddr_entry, state=changeStateAllEntry, cursor=type_cursor)
+DEBUGSSHServerCombo['values'] = ('true', 'false')    # Liste des valeurs de la liste
+DEBUGSSHServerCombo.current(0)                                       # Choix de la valeur courante
+bal.bind_widget(DEBUGSSHServerCombo, msg="true par défaut")
+#DEBUGSSHServerCombo.bind('<<ComboboxSelected>>', choixLD)    # Action déclenchée par une sélection dans la liste 
+
      
 Label(o1, text='SSHPort:').place(x=100, y=620)
 DEBUGSSHPort_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 DEBUGSSHPort_entry.place(x=180, y=620)
 variable_DEBUGSSHPort_entry = IntVar()
-"""Mémorise un entier; sa valeur par défaut est 0 """
+variable_DEBUGSSHPort_entry.set(8322)
 DEBUGSSHPort_entry.config(textvariable=variable_DEBUGSSHPort_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(DEBUGSSHPort_entry, msg="Message")
+bal.bind_widget(DEBUGSSHPort_entry, msg="8322 par défaut")
      
 Label(o1, text='LogLevel:').place(x=100, y=640)
 DEBUGLogLevel_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 DEBUGLogLevel_entry.place(x=180, y=640)
-"""Mémorise un entier; sa valeur par défaut est 0 """
 variable_DEBUGLogLevel_entry = IntVar()
+variable_DEBUGLogLevel_entry.set(2)
 DEBUGLogLevel_entry.config(textvariable=variable_DEBUGLogLevel_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(DEBUGLogLevel_entry, msg="Message")
+bal.bind_widget(DEBUGLogLevel_entry, msg="2 par défaut")
      
 Label(o1, text='WatchDog:').place(x=100, y=660)
 DEBUGWatchDog_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 DEBUGWatchDog_entry.place(x=180, y=660)
-variable_DEBUGWatchDog_entry = StringVar()
-DEBUGWatchDog_entry.config(textvariable=variable_DEBUGWatchDog_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(DEBUGWatchDog_entry, msg="Message")
+variable_DEBUGWatchDog_entry = BooleanVar()
+variable_DEBUGWatchDog_entry.set(True)
+DEBUGWatchDog_entry.config(textvariable = variable_DEBUGWatchDog_entry, state= DISABLED, cursor=type_cursor)
+bal.bind_widget(DEBUGWatchDog_entry, msg="Valeur non modifiable - Toujours sur True")
      
 Label(o1, text='LogUpload:').place(x=100, y=680)
-DEBUGLogUpload_entry = Entry(o1, width=25, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
-DEBUGLogUpload_entry.place(x=180, y=680)
-variable_DEBUGLogUpload_entry = StringVar()
-DEBUGLogUpload_entry.config(textvariable=variable_DEBUGLogUpload_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(DEBUGLogUpload_entry, msg="Message")
-    
+
+# Liste déroulante
+variable_DEBUGLogUpload_entry = BooleanVar()        # Variable de type str associée à la valeur affichée dans la liste
+DEBUGLogUploadCombo = ttk.Combobox(o1, textvariable=variable_DEBUGLogUpload_entry, state=changeStateAllEntry, cursor=type_cursor)
+DEBUGLogUploadCombo.place(x=180, y=680)
+#LANIPFixeCombo.config(textvariable=variable_LANIPAddr_entry, state=changeStateAllEntry, cursor=type_cursor)
+DEBUGLogUploadCombo['values'] = ('true', 'false')    # Liste des valeurs de la liste
+DEBUGLogUploadCombo.current(1)                                       # Choix de la valeur courante
+bal.bind_widget(DEBUGLogUploadCombo, msg="false par défaut")
+#DEBUGSSHServerCombo.bind('<<ComboboxSelected>>', choixLD)    # Action déclenchée par une sélection dans la liste 
+
 button_save = Button(o1, text='Enregistrer', cursor="hand2", activebackground='green', state=NORMAL, command=get_GWConfigFile).place(x=550, y=675)
   
 o1.pack()
