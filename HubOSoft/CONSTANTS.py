@@ -97,3 +97,12 @@ EMPTY_JSON_DICT_CONFIG_FILE = {
         }
     }
 }
+
+#Dictionnary with data for empty LoRaGWConfigurationFile JSON
+EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE = {
+  "LoRa_GW_Allowed_End_Dev_File": {
+    "Version": "01.00",
+    "End_Device_Objects": [
+    ]
+  }
+}

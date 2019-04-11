@@ -21,10 +21,11 @@ from Files_Functions import *
 from LoRaGWConfigurationFile import get_GW_config_file,\
     get_GW_config_file_version,get_all_entry_and_create_JSON_GW_Conf_File,\
     create_name_config_file, create_name_config_file_directory,\
-    write_newJSON_delete_oldJSON_updateLinkFile
+    write_newJSON_delete_oldJSON_updateLinkFile_GW_Conf
     
 from LoRaGWAllowedEndDeviceFile import get_AllowedEndDevice_File,\
-    get_list_EndDevice, add_json_object, create_name_AllowedEndDevice_File_Name, get_all_entry_and_create_JSON_GW_AllowedEndDevice_File
+    get_list_EndDevice, add_json_object, create_name_AllowedEndDevice_File_Name, get_all_entry_and_create_JSON_GW_AllowedEndDevice_File,\
+    write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed
 from tkinter.tix import *
 from tkinter.tix import Balloon
 import IHM
@@ -46,7 +47,10 @@ DIR_NAME_CONFIG = ""
 #Variable for data folder directory
 DIR_NAME_DATA = ""
 
-#############################################
+# Boolean variable to choose OTA or ABP End Device
+bool_OTA_or_ABP = False
+
+###################################################
 #To return Configuration directory
 def get_dir_name_config():
     return DIR_NAME_CONFIG
@@ -54,6 +58,10 @@ def get_dir_name_config():
 #To return Data directory
 def get_dir_name_data():
     return DIR_NAME_DATA
+
+#To return Data directory
+def get_bool_OTA_or_ABP():
+    return bool_OTA_or_ABP
 
 # To create configuration of DATA folder ( folder LOGS + index.php)
 def create_data_sub_folder_and_index(server_directory):
@@ -229,6 +237,7 @@ def ask_OK_Cancel():
 
 # To enable OTA and disable ABP       
 def show_OTA():
+    bool_OTA_or_ABP = True
     OTAFieldsAppEUI_entry.config(state=NORMAL)
     OTAFieldsAppKey_entry.config(state=NORMAL)
     ASSOSInfosActivationMode_entry.delete (0, len(ASSOSInfosActivationMode_entry.get()))
@@ -236,15 +245,18 @@ def show_OTA():
     ABPFieldsAppSKey_entry.selection_clear()
     ABPFieldsNwkSKey_entry.config(state=DISABLED)
     ABPFieldsAppSKey_entry.config(state=DISABLED)
+    return bool_OTA_or_ABP
 
 # To enable ABP and disable OTA 
 def show_ABP():
+    bool_OTA_or_ABP = False
     ABPFieldsNwkSKey_entry.config(state=NORMAL)
     ABPFieldsAppSKey_entry.config(state=NORMAL)
     ASSOSInfosActivationMode_entry.delete (0, len(ASSOSInfosActivationMode_entry.get()))
     ASSOSInfosActivationMode_entry.insert(0,"ABP")
     OTAFieldsAppEUI_entry.config(state=DISABLED)
     OTAFieldsAppKey_entry.config(state=DISABLED)
+    return bool_OTA_or_ABP
     
 # To create the GW configuration Json
 def get_GWConfigFile():
@@ -253,7 +265,7 @@ def get_GWConfigFile():
     new_json_object = get_all_entry_and_create_JSON_GW_Conf_File()
     new_config_file = create_name_config_file(version)
     new_config_file_directory = create_name_config_file_directory(get_dir_name_config(), new_config_file)
-    write_newJSON_delete_oldJSON_updateLinkFile(new_config_file,new_json_object,conf_file,get_dir_name_config())
+    write_newJSON_delete_oldJSON_updateLinkFile_GW_Conf(new_config_file,new_json_object,conf_file,get_dir_name_config())
         
     # To create manifest file
     text1 = "bin\make-manifest.exe --type CFG --file " 
@@ -270,21 +282,19 @@ def get_GWConfigFile():
 # To create a allowedEndDevice file Json    NOT FINISH
 def get_GWAllowedEndDeviceFile():
     messagebox.showinfo(title="Information", message="TEST BOUTON GW ALLOWED END DEVICE FILE")
-    conf_file = get_AllowedEndDevice_File(get_dir_name_config())
-    version = get_GW_config_file_version(conf_file, get_dir_name_config())
-    parsed_json = get_list_EndDevice(conf_file)
-    new_json_object = get_all_entry_and_create_JSON_GW_AllowedEndDevice_File()
+    prov_file = get_AllowedEndDevice_File(get_dir_name_config())
+    version = get_GW_config_file_version(prov_file, get_dir_name_config())
+    parsed_json = get_list_EndDevice(prov_file)
+    new_json_object = get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(get_bool_OTA_or_ABP())
     add_json_object(parsed_json, new_json_object)
     new_prov_file = create_name_AllowedEndDevice_File_Name(version, get_dir_name_config())
-    #write_newJSON_delete_oldJSON_updateLinkFile(new_prov_file,parsed_json,conf_file,get_dir_name_config())
+    write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed(new_prov_file,parsed_json,prov_file,get_dir_name_config())
 
 # To create a EndDeviceConfig file Json   NOT FINISH
 def get_EndDeviceConfigFile():
     messagebox.showinfo(title="Information", message="TEST BOUTON END DEVICE CONFIG FILE")
 
-
-             
-###############GRAPHIC INTERFACE######################           
+##############GRAPHIC INTERFACE######################           
 mainWindow = Tk()
 mainWindow.title('CREATION DE FICHIER HUBO')  # Title
 mainWindow.geometry("800x775-650+50")  # Size of mainWindow window and placement on screen
@@ -306,7 +316,6 @@ bal = Balloon()
 n.pack()
 
 ###EVENEMENTS####
-# mainWindow.bind("<End>", ask_OK_Cancel2)
 mainWindow.bind("<Button-1>", show_Info_Folders)
 mainWindow.bind("<Key>", show_Info_Folders("<Key>"))
 mainWindow.protocol("WM_DELETE_WINDOW", ask_OK_Cancel)
@@ -652,7 +661,6 @@ button_ota = Button(o2, text='CAPTEUR OTA', cursor="hand2", default=DISABLED, ac
 Label(o2, text='ABP_Fields:').place(x=110, y=275)
 button_abp = Button(o2, text='CAPTEUR ABP', cursor="hand2", default=DISABLED, activebackground='green', state = NORMAL, command = show_ABP).place(x=20, y=273)   
 
-
 Label(o2, text='AppEUI:').place(x=140, y=225)
 OTAFieldsAppEUI_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 OTAFieldsAppEUI_entry.place(x=200, y=225)
@@ -691,8 +699,7 @@ Label(o3, text='Lora_End_Device_Config_File:').place(x=20, y=5)
 Label(o3, text='Version:').place(x=70, y=30)
 VersionLoRaEndDeviceConfigFile_entry = Entry(o3, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 VersionLoRaEndDeviceConfigFile_entry.place(x=120, y=30)
-"""Mémorise un flottant; sa valeur par défaut est 0.0 """
-variable_VersionLoRaEndDeviceConfigFile_entry = DoubleVar()
+variable_VersionLoRaEndDeviceConfigFile_entry = StringVar()
 VersionLoRaEndDeviceConfigFile_entry.config(textvariable=variable_VersionLoRaEndDeviceConfigFile_entry, state=changeStateAllEntry, cursor=type_cursor)
 bal.bind_widget(VersionLoRaEndDeviceConfigFile_entry, msg="Message")
     
@@ -710,7 +717,6 @@ Label(o3, text='MAC_Info:').place(x=110, y=105)
 Label(o3, text='FPort:').place(x=140, y=130)
 MACInfoFPort_entry = Entry(o3, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 MACInfoFPort_entry.place(x=210, y=130)
-"""Mémorise un entier; sa valeur par défaut est 0 """
 variable_MACInfoFPort_entry = IntVar()
 MACInfoFPort_entry.config(textvariable=variable_MACInfoFPort_entry, state=changeStateAllEntry, cursor=type_cursor)
 bal.bind_widget(MACInfoFPort_entry, msg="Message")
@@ -727,7 +733,6 @@ Label(o3, text='Alarm_Info:').place(x=110, y=180)
 Label(o3, text='Is_Alarm:').place(x=140, y=205)
 ALARMINFOIsAlarm_entry = Entry(o3, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 ALARMINFOIsAlarm_entry.place(x=210, y=205)
-"""Mémorise un entier; sa valeur par défaut est 0 """
 variable_ALARMINFOIsAlarm_entry = IntVar()
 ALARMINFOIsAlarm_entry.config(textvariable=variable_ALARMINFOIsAlarm_entry, state=changeStateAllEntry, cursor=type_cursor)
 bal.bind_widget(ALARMINFOIsAlarm_entry, msg="Message")
@@ -742,7 +747,6 @@ bal.bind_widget(ALARMINFORegEx_entry, msg="Message")
 Label(o3, text='Act_On_Alarm:').place(x=125, y=255)
 ALARMINFOActOnAlarm_entry = Entry(o3, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 ALARMINFOActOnAlarm_entry.place(x=210, y=255)
-"""Mémorise un entier; sa valeur par défaut est 0 """
 variable_ALARMINFOActOnAlarm_entry = IntVar()
 ALARMINFOActOnAlarm_entry.config(textvariable=variable_ALARMINFOActOnAlarm_entry, state=changeStateAllEntry, cursor=type_cursor)
 bal.bind_widget(ALARMINFOActOnAlarm_entry, msg="Message")

@@ -15,27 +15,36 @@ import Files_Functions
 import IHM
 from IHM import *
 from LoRaLinkFile import EMPTY_JSON_DICT_LINK_FILE, DEFAULT_LINK_FILE_NAME, JSON_LINK_START_NAME
+from CONSTANTS import EMPTY_JSON_DICT_CONFIG_FILE,EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE
 
 # CONSTANTS
 JSON_GW_CONF_OBJ_NAME = "LoRa_GW_Allowed_End_Dev_File"
 JSON_PROV_TAB_NAME = "End_Device_Objects"
+EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE = "P_010_0000.json"
+
     
 # Get the provisionning file and the provisionning file version
-def get_AllowedEndDevice_File(directory):
-    conf_file = sFGetCompleteFilenameDirectory(directory, "p_" )
-    print( "\nFound provisionning file : ", conf_file )
-    return conf_file
+def get_AllowedEndDevice_File(server_directory):
+    prov_file = sFGetCompleteFilenameDirectory(server_directory, "p_010" )
+    print("\nFound provisionning file : ", prov_file )
+      
+    #If no config file then create the name of a empty config file
+    if(prov_file == "ERROR"):
+        prov_file = server_directory + EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE
+        dict_in_json(server_directory, EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE, EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE)
+    print( "\nFound provisionning file : ", prov_file )    
+    return prov_file
 
 # Get the Allowed EndDevice file version
-def get_AllowedEndDevice_File_version(conf_file, directory):
-    version = int( conf_file[(len(directory)+1+6):(len(directory)+1+10)] )
+def get_AllowedEndDevice_File_version(prov_file, server_directory):
+    version = int( prov_file[(len(server_directory)+6):(len(server_directory)+10)] )
     print( "Version :", version )
     return version
 
 # Get the list of end-devices
-def get_list_EndDevice(conf_file):
+def get_list_EndDevice(prov_file):
     end_dev_list =  []
-    with open(conf_file, 'r') as jsonfile:
+    with open(prov_file, 'r') as jsonfile:
         # Read the content of the json file
         json_content = jsonfile.read()
     # Load the json as a json object 
@@ -52,40 +61,37 @@ def get_list_EndDevice(conf_file):
     return parsed_json
    
 #Get all entry and Prepare the json object 
-def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File():
-    Dev_EUI = IHM.variable_ENDDeviceIDDevEUI_entry
-    Dev_Addr = IHM.variable_ENDDeviceIDDevAddr_entry
-    Class = IHM.variable_ASSOSInfosClass_entry 
-    Asso_type = IHM.ASSOSInfosActivationMode_entry
-  
-    #####################################################
-    if (IHM.variable_OTA_Checkbutton.get() == 1) :
-        print(IHM.variable_OTA_Checkbutton.get())
-        isOTAA = True
-    else:
-        print(IHM.variable_OTA_Checkbutton.get())
-        isOTAA = False
-    #####################################################
+def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA):
+    
+    Dev_EUI = IHM.variable_ENDDeviceIDDevEUI_entry.get()
+    Dev_Addr = IHM.variable_ENDDeviceIDDevAddr_entry.get()
+    
+    Asso_type = IHM.ASSOSInfosActivationMode_entry.get()
+    Class = IHM.variable_ASSOSInfosClass_entry.get()   
     
     if( isOTAA ):
     # OTAA managed
-        App_EUI = IHM.variable_OTAFieldsAppEUI_entry  
-        AppKey = IHM.variable_OTAFieldsAppKey_entry    
+        App_EUI = IHM.variable_OTAFieldsAppEUI_entry.get() 
+        AppKey = IHM.variable_OTAFieldsAppKey_entry.get()    
         print("DevEUI :", Dev_EUI)
         print("DevAddr :", Dev_Addr)
+        print("Asso_Infos :", Asso_type)
         print("Class :", Class)
         print("AppEUI :", App_EUI)
         print("AppKey :", AppKey)
     else:
     # ABP managed
-        Nwk_S_Key = IHM.variable_ABPFieldsNwkSKey_entry  
-        App_S_Key = IHM.variable_ABPFieldsAppSKey_entry   
+        Nwk_S_Key = IHM.variable_ABPFieldsNwkSKey_entry.get()  
+        App_S_Key = IHM.variable_ABPFieldsAppSKey_entry.get()   
         print("DevEUI :", Dev_EUI)
         print("DevAddr :", Dev_Addr)
+        print("Asso_Infos :", Asso_type)
         print("Class :", Class)
         print("NwkSKey :", Nwk_S_Key)
         print("AppSKey :", App_S_Key)
         
+        
+    
     #Prepare the json object
     new_json_object = OrderedDict()
         
@@ -122,22 +128,22 @@ def add_json_object(parsed_json, new_json_object):
 # Create the name of the new provisionning file
 def create_name_AllowedEndDevice_File_Name(version, server_directory):
     new_prov_file = "p_010_" + (str(version+1).zfill(4)) + ".json"
-    new_prov_file = (server_directory  + "\\" + new_prov_file )
+    new_prov_file = (server_directory  + new_prov_file )
     return new_prov_file
 
 #Write the new json object and delete the old file
-def write_newJSON_delete_oldJSON_updateLinkFile(new_prov_file,parsed_json,conf_file,server_directory):
+def write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed(new_prov_file,new_json_object,prov_file,server_directory):
     with open(new_prov_file, 'w') as resultjsonfile:
         # Print the json object in a file
-        json.dump(parsed_json, resultjsonfile, indent=4)
-            
+        json.dump(new_json_object, resultjsonfile, indent=4)
+             
     # Delete the old file
-    os.remove(conf_file)
+    os.remove(prov_file)
     print( "\nProvisionning file updated : ", new_prov_file )
-    
+     
     # To test if a link_file exist
     link_file_name_directory = sFGetCompleteFilenameDirectory(server_directory,JSON_LINK_START_NAME)
-        
+         
     #If no link file then create a empty link file json and name of a empty default link file
     if(link_file_name_directory == "ERROR"):
         print("Pas de fichier LINK FILE dans le dossier , CREATION D'UN LINK FILE")
@@ -145,8 +151,8 @@ def write_newJSON_delete_oldJSON_updateLinkFile(new_prov_file,parsed_json,conf_f
         link_file_name_directory = server_directory + link_file_name
         data_dict = EMPTY_JSON_DICT_LINK_FILE
         dict_in_json(server_directory, link_file_name, data_dict)
-        
-    # Add the filename in the corresponding file
-    vFUpdateLinkFile(server_directory, link_file_name_directory, conf_file[-15:], new_prov_file[-15:] )
          
-    print( "Link file updated : ", server_directory + "\\" + link_file_name )
+    # Add the filename in the corresponding file
+    vFUpdateLinkFile(server_directory, link_file_name_directory, prov_file[-15:], new_prov_file[-15:] )
+          
+    print( "Link file updated : ", server_directory + link_file_name )

@@ -26,7 +26,7 @@ JSON_GW_CONF_TAB_NAME_WWAN = "Wwan"
 JSON_GW_CONF_TAB_NAME_TIME = "Time"
 JSON_GW_CONF_TAB_NAME_SERVICE = "Service"
 JSON_GW_CONF_TAB_NAME_DEBUG = "Debug"
-EMPTY_JSON_NAME = "c_010_0000.json"
+EMPTY_JSON_NAME_GW_CONFIGURATION = "c_010_0000.json"
 
 # Get the GW configuration file and configuration file version
 def get_GW_config_file(server_directory):
@@ -34,14 +34,13 @@ def get_GW_config_file(server_directory):
               
     #If no config file then create the name of a empty config file
     if(conf_file == "ERROR"):
-        conf_file = server_directory + EMPTY_JSON_NAME
-        dict_in_json(server_directory, EMPTY_JSON_NAME, EMPTY_JSON_DICT_CONFIG_FILE)
+        conf_file = server_directory + EMPTY_JSON_NAME_GW_CONFIGURATION
+        dict_in_json(server_directory, EMPTY_JSON_NAME_GW_CONFIGURATION, EMPTY_JSON_DICT_CONFIG_FILE)
         
     return conf_file
    
 # Get the GW configuration file version
 def get_GW_config_file_version(conf_file,server_directory):
-    # Operations to get the version of config file
     version = int( conf_file[(len(server_directory) + 6):(len(server_directory) + 10)] )
     return version
     
@@ -145,11 +144,11 @@ def create_name_config_file(version):
 
 # Create and Return the name with directory of the new configuration file    
 def create_name_config_file_directory(server_directory, new_config_file):
-    new_config_file_directory = ( server_directory+ new_config_file )
+    new_config_file_directory = ( server_directory + new_config_file )
     return new_config_file_directory
 
 # Write the new json object and delete the old file
-def write_newJSON_delete_oldJSON_updateLinkFile(new_config_file,new_json_object,conf_file,server_directory):
+def write_newJSON_delete_oldJSON_updateLinkFile_GW_Conf(new_config_file,new_json_object,conf_file,server_directory):
     with open(server_directory + new_config_file, 'w') as resultjsonfile:
         # Print the json object in a file
         json.dump(new_json_object, resultjsonfile, indent = 4)

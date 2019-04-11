@@ -20,27 +20,36 @@ from LoRaLinkFile import JSON_LINK_OBJ_NAME, JSON_LINK_TAB_NAME
 def sFGetCompleteFilenameDirectory(directory, file_begin ):
 	# Get the availables files in the directory 
 	available_files = os.listdir( directory ) #List in the directory
-	print("available_files", available_files)
-		
-	# Get the begin length
-	begin_length = len(file_begin)   #"c_010" # number of item in object file_begin = 5
-	print("begin_length", begin_length)
-		
-	# Initialize the result
-	result_file = "ERROR"
-				
-	#If file found
-	# Look if a file like that exists in the directory
-	for file in available_files:
-		if( file[:begin_length] == file_begin):
-			print("file[:begin_length]" , file[:begin_length])
 			
-			print("AFFICHAGE DE file : " , file)
-			if(file != 'c_010.manifest'):
-				result_file = (directory + file)
-				break
+	# Get the begin length
+	begin_length = len(file_begin)
 	
-	print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN " + result_file)
+	# Initialize the result
+	result_file = "ERROR"  
+	
+	# If Gateway Configuration File
+	if(file_begin == "c_010"):		
+		#If file found
+		# Look if a file like that exists in the directory
+		for file in available_files:
+			if( file[:begin_length] == file_begin):
+				print("file[:begin_length]" , file[:begin_length])
+				
+				print("AFFICHAGE DE file : " , file)
+				if(file != 'c_010.manifest'):
+					result_file = (directory + file)
+					break
+		
+		print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN c_010" + result_file)
+	# If Gateway AllowedEndDevice File
+	if(file_begin == "p_"):
+		# Look if a file like that exists in the directory
+		for file in available_files:
+			if( file[:begin_length] == file_begin ):
+				result_file = ( directory + file )
+				break
+		
+		print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN p_" + result_file)
 	return result_file
 
 # --------------------------------------------------
