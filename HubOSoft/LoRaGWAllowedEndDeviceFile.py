@@ -14,11 +14,11 @@ from Files_Functions import *
 import Files_Functions
 import IHM
 from IHM import *
+from LoRaLinkFile import EMPTY_JSON_DICT_LINK_FILE, DEFAULT_LINK_FILE_NAME, JSON_LINK_START_NAME
 
 # CONSTANTS
 JSON_GW_CONF_OBJ_NAME = "LoRa_GW_Allowed_End_Dev_File"
 JSON_PROV_TAB_NAME = "End_Device_Objects"
-link_file_name = "corresp_file.json"
     
 # Get the provisionning file and the provisionning file version
 def get_AllowedEndDevice_File(directory):
@@ -52,7 +52,7 @@ def get_list_EndDevice(conf_file):
     return parsed_json
    
 #Get all entry and Prepare the json object 
-def get_all_entry_and_create_JSON():
+def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File():
     Dev_EUI = IHM.variable_ENDDeviceIDDevEUI_entry
     Dev_Addr = IHM.variable_ENDDeviceIDDevAddr_entry
     Class = IHM.variable_ASSOSInfosClass_entry 
@@ -133,12 +133,20 @@ def write_newJSON_delete_oldJSON_updateLinkFile(new_prov_file,parsed_json,conf_f
             
     # Delete the old file
     os.remove(conf_file)
-        
     print( "\nProvisionning file updated : ", new_prov_file )
-        
-#     # Add the filename in the corresponding file
-#     vFUpdateLinkFile(server_directory, link_file_name, conf_file[-15:], new_prov_file[-15:] )
-#         
-#     print( "Link file updated : ", server_directory + "\\" + link_file_name )
     
-###############################################
+    # To test if a link_file exist
+    link_file_name_directory = sFGetCompleteFilenameDirectory(server_directory,JSON_LINK_START_NAME)
+        
+    #If no link file then create a empty link file json and name of a empty default link file
+    if(link_file_name_directory == "ERROR"):
+        print("Pas de fichier LINK FILE dans le dossier , CREATION D'UN LINK FILE")
+        link_file_name =  JSON_LINK_START_NAME + DEFAULT_LINK_FILE_NAME + '.json'
+        link_file_name_directory = server_directory + link_file_name
+        data_dict = EMPTY_JSON_DICT_LINK_FILE
+        dict_in_json(server_directory, link_file_name, data_dict)
+        
+    # Add the filename in the corresponding file
+    vFUpdateLinkFile(server_directory, link_file_name_directory, conf_file[-15:], new_prov_file[-15:] )
+         
+    print( "Link file updated : ", server_directory + "\\" + link_file_name )

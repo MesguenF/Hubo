@@ -31,15 +31,12 @@ EMPTY_JSON_NAME = "c_010_0000.json"
 # Get the GW configuration file and configuration file version
 def get_GW_config_file(server_directory):
     conf_file = sFGetCompleteFilenameDirectory(server_directory,"c_010")
-    print( "TEST AVANT \nFound configuration file : ", conf_file )
-    
+              
     #If no config file then create the name of a empty config file
     if(conf_file == "ERROR"):
-        print("Pas de fichier de configuration dans le répertoire")
         conf_file = server_directory + EMPTY_JSON_NAME
         dict_in_json(server_directory, EMPTY_JSON_NAME, EMPTY_JSON_DICT_CONFIG_FILE)
-    
-    print( "TEST APRES \nFound configuration file : ", conf_file )    
+        
     return conf_file
    
 # Get the GW configuration file version
@@ -49,7 +46,7 @@ def get_GW_config_file_version(conf_file,server_directory):
     return version
     
 #Get all entry and Prepare the json object 
-def get_all_entry_and_create_JSON():
+def get_all_entry_and_create_JSON_GW_Conf_File():
     
     #Variables to receive the entries of interface 
     VersionGW = IHM.VersionLoRaGWConfigFile_entry.get()
@@ -156,18 +153,13 @@ def write_newJSON_delete_oldJSON_updateLinkFile(new_config_file,new_json_object,
     with open(server_directory + new_config_file, 'w') as resultjsonfile:
         # Print the json object in a file
         json.dump(new_json_object, resultjsonfile, indent = 4)
-        print( "\nConf file : ", conf_file )
-        print( "\nNew Conf : ", new_config_file )
         
     #Delete the old file
     os.remove(conf_file)
-    
-    print( "\nNew Conf : ", new_config_file )
-    
+           
     # To test if a link_file exist
     link_file_name_directory = sFGetCompleteFilenameDirectory(server_directory,JSON_LINK_START_NAME)
-    print( "TEST AVANT Found LINK FILE : ", link_file_name_directory)
-    
+        
     #If no link file then create a empty link file json and name of a empty default link file
     if(link_file_name_directory == "ERROR"):
         print("Pas de fichier LINK FILE dans le dossier , CREATION D'UN LINK FILE")
@@ -175,11 +167,7 @@ def write_newJSON_delete_oldJSON_updateLinkFile(new_config_file,new_json_object,
         link_file_name_directory = server_directory + link_file_name
         data_dict = EMPTY_JSON_DICT_LINK_FILE
         dict_in_json(server_directory, link_file_name, data_dict)
-    
-    print( "APRES TEST DE PRESENCE Found LINK FILE : ", link_file_name_directory)       
-    
+            
     # Add the filename in the corresponding file
     vFUpdateLinkFile(server_directory, link_file_name_directory, conf_file[-15:], new_config_file[-15:] )
-    print( "Link file updated : ", link_file_name_directory )
-    
-    
+        

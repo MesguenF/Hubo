@@ -9,23 +9,22 @@
 from fileinput import filename
 import os
 import sys
+import shutil
 from tkinter import *
 from tkinter import Tk, Label, Frame, Button, Menu, ttk, Entry, Checkbutton, messagebox, \
-    StringVar, DoubleVar, IntVar, Toplevel,BooleanVar,Pack,Place
-from tkinter import filedialog
+    StringVar, DoubleVar, IntVar, Toplevel,BooleanVar,Pack,Place,filedialog
 from tkinter.constants import DISABLED, NORMAL
 from tkinter.filedialog import SaveFileDialog, FileDialog, asksaveasfilename
 import Files_Functions
 from controller import *
-from enum import *
 from Files_Functions import *
 from LoRaGWConfigurationFile import get_GW_config_file,\
-    get_GW_config_file_version,get_all_entry_and_create_JSON,\
+    get_GW_config_file_version,get_all_entry_and_create_JSON_GW_Conf_File,\
     create_name_config_file, create_name_config_file_directory,\
     write_newJSON_delete_oldJSON_updateLinkFile
     
 from LoRaGWAllowedEndDeviceFile import get_AllowedEndDevice_File,\
-    get_list_EndDevice, add_json_object, create_name_AllowedEndDevice_File_Name
+    get_list_EndDevice, add_json_object, create_name_AllowedEndDevice_File_Name, get_all_entry_and_create_JSON_GW_AllowedEndDevice_File
 from tkinter.tix import *
 from tkinter.tix import Balloon
 import IHM
@@ -208,12 +207,12 @@ def show_Info_Folders(event):
 # To display a window with the folders directory
 def show_Folders():
     TEXT ="Non défini"
-                   
+    # test NAME_CONFIG              
     if(DIR_NAME_CONFIG == ""):
         text_directory_config = TEXT
     else:
         text_directory_config = DIR_NAME_CONFIG
-        
+    # test NAME_DATA     
     if(DIR_NAME_DATA == ""):
         text_directory_data = TEXT
     else:
@@ -228,7 +227,7 @@ def ask_OK_Cancel():
     if(test_exit):
         mainWindow.destroy()
 
-# NOT OK       
+# To enable OTA and disable ABP       
 def show_OTA():
     OTAFieldsAppEUI_entry.config(state=NORMAL)
     OTAFieldsAppKey_entry.config(state=NORMAL)
@@ -238,7 +237,7 @@ def show_OTA():
     ABPFieldsNwkSKey_entry.config(state=DISABLED)
     ABPFieldsAppSKey_entry.config(state=DISABLED)
 
-# NOT OK
+# To enable ABP and disable OTA 
 def show_ABP():
     ABPFieldsNwkSKey_entry.config(state=NORMAL)
     ABPFieldsAppSKey_entry.config(state=NORMAL)
@@ -250,26 +249,23 @@ def show_ABP():
 # To create the GW configuration Json
 def get_GWConfigFile():
     conf_file = get_GW_config_file(get_dir_name_config())
-    messagebox.showinfo(title="Information", message="TEST BOUTON GW CONFIGURATION FILE \n conf_file = " + conf_file)
     version = get_GW_config_file_version(conf_file,get_dir_name_config())
-    messagebox.showinfo(title="Information", message="TEST BOUTON GW CONFIGURATION FILE \n version = " + str(version))
-    new_json_object = get_all_entry_and_create_JSON()
+    new_json_object = get_all_entry_and_create_JSON_GW_Conf_File()
     new_config_file = create_name_config_file(version)
-    print("new_conf_file :" + new_config_file)
     new_config_file_directory = create_name_config_file_directory(get_dir_name_config(), new_config_file)
-    print("new_conf_file_directory :" + new_config_file_directory)
     write_newJSON_delete_oldJSON_updateLinkFile(new_config_file,new_json_object,conf_file,get_dir_name_config())
-    ###NE FONCTIONNE PAS###
-    chaine1 = "bin\make-manifest.exe --type CFG --file " 
-    chaine2 = new_config_file_directory
-    chaine = chaine1 + chaine2
-    print(chaine)
+        
+    # To create manifest file
+    text1 = "bin\make-manifest.exe --type CFG --file " 
+    text2 = new_config_file_directory
+    text = text1 + text2
     # example command : make-manifest.exe --type CFG --file c_010_0000.json     
-    os.system(chaine)
-
-# To create a EndDeviceConfig file Json   NOT FINISH
-def get_EndDeviceConfigFile():
-    messagebox.showinfo(title="Information", message="TEST BOUTON END DEVICE CONFIG FILE")
+    os.system(text)
+    # To copy the manifest file in configuration directory
+    cpfich=os.path.basename("c_010.manifest")
+    shutil.move("c_010.manifest",DIR_NAME_CONFIG + cpfich)
+    
+    messagebox.showinfo(title="Information", message="Les fichiers suivants ont été créé : \n\n" + new_config_file + "\nc_010.manifest \n\nDans le dosiier : " + DIR_NAME_CONFIG)
 
 # To create a allowedEndDevice file Json    NOT FINISH
 def get_GWAllowedEndDeviceFile():
@@ -277,10 +273,16 @@ def get_GWAllowedEndDeviceFile():
     conf_file = get_AllowedEndDevice_File(get_dir_name_config())
     version = get_GW_config_file_version(conf_file, get_dir_name_config())
     parsed_json = get_list_EndDevice(conf_file)
-    new_json_object = get_all_entry_and_create_JSON(version, get_dir_name_config(), conf_file)
+    new_json_object = get_all_entry_and_create_JSON_GW_AllowedEndDevice_File()
     add_json_object(parsed_json, new_json_object)
     new_prov_file = create_name_AllowedEndDevice_File_Name(version, get_dir_name_config())
     #write_newJSON_delete_oldJSON_updateLinkFile(new_prov_file,parsed_json,conf_file,get_dir_name_config())
+
+# To create a EndDeviceConfig file Json   NOT FINISH
+def get_EndDeviceConfigFile():
+    messagebox.showinfo(title="Information", message="TEST BOUTON END DEVICE CONFIG FILE")
+
+
              
 ###############GRAPHIC INTERFACE######################           
 mainWindow = Tk()
@@ -605,10 +607,10 @@ Label(o2, text='Lora_GW_Allowed_End_Dev_File:').place(x=20, y=5)
 Label(o2, text='Version:').place(x=70, y=30)
 VersionLoRaGWAllowedEndDevFile_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 VersionLoRaGWAllowedEndDevFile_entry.place(x=120, y=30)
-variable_VersionLoRaGWAllowedEndDevFile_entry = DoubleVar()
-"""Mémorise un flottant; sa valeur par défaut est 0.0 """
+variable_VersionLoRaGWAllowedEndDevFile_entry = StringVar()
+variable_VersionLoRaGWAllowedEndDevFile_entry.set("02.00")
 VersionLoRaGWAllowedEndDevFile_entry.config(textvariable=variable_VersionLoRaGWAllowedEndDevFile_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(VersionLoRaGWAllowedEndDevFile_entry, msg="Message")
+bal.bind_widget(VersionLoRaGWAllowedEndDevFile_entry, msg="02.00 par défaut")
 ##############################################
 Label(o2, text='End_Device_Objects:').place(x=70, y=53)
     
@@ -619,14 +621,14 @@ ENDDeviceIDDevEUI_entry = Entry(o2, width=20, disabledbackground=color_disabled_
 ENDDeviceIDDevEUI_entry.place(x=200, y=90)
 variable_ENDDeviceIDDevEUI_entry = StringVar()
 ENDDeviceIDDevEUI_entry.config(textvariable=variable_ENDDeviceIDDevEUI_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(ENDDeviceIDDevEUI_entry, msg="Message")
+bal.bind_widget(ENDDeviceIDDevEUI_entry, msg="exemple 70B3D5E75F0000D8")
     
 Label(o2, text='DevAddr:').place(x=140, y=115)
 ENDDeviceIDDevAddr_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 ENDDeviceIDDevAddr_entry.place(x=200, y=115)
 variable_ENDDeviceIDDevAddr_entry = StringVar()
 ENDDeviceIDDevAddr_entry.config(textvariable=variable_ENDDeviceIDDevAddr_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(ENDDeviceIDDevAddr_entry, msg="Message")
+bal.bind_widget(ENDDeviceIDDevAddr_entry, msg="exemple 010000D8")
     
 Label(o2, text='Assos Infos:').place(x=110, y=135)
     
@@ -635,14 +637,14 @@ ASSOSInfosActivationMode_entry = Entry(o2, width=20, disabledbackground=color_di
 ASSOSInfosActivationMode_entry.place(x=240, y=155)
 variable_ASSOSInfosActivationMode_entry = StringVar()
 ASSOSInfosActivationMode_entry.config(textvariable=variable_ASSOSInfosActivationMode_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(ASSOSInfosActivationMode_entry, msg="Message")
+bal.bind_widget(ASSOSInfosActivationMode_entry, msg="OTA ou ABP")
     
 Label(o2, text='Class:').place(x=140, y=180)
 ASSOSInfosClass_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 ASSOSInfosClass_entry.place(x=200, y=180)
 variable_ASSOSInfosClass_entry = StringVar()
 ASSOSInfosClass_entry.config(textvariable=variable_ASSOSInfosClass_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(ASSOSInfosClass_entry, msg="Message")
+bal.bind_widget(ASSOSInfosClass_entry, msg="A ou B ou C")
     
 Label(o2, text='OTA_Fields:').place(x=110, y=200)
 button_ota = Button(o2, text='CAPTEUR OTA', cursor="hand2", default=DISABLED, activebackground='green', state = NORMAL, command = show_OTA).place(x=20, y=198)
@@ -656,28 +658,28 @@ OTAFieldsAppEUI_entry = Entry(o2, width=20, disabledbackground=color_disabled_ba
 OTAFieldsAppEUI_entry.place(x=200, y=225)
 variable_OTAFieldsAppEUI_entry = StringVar()
 OTAFieldsAppEUI_entry.config(textvariable=variable_OTAFieldsAppEUI_entry, cursor=type_cursor, state = changeStateAllEntry)
-bal.bind_widget(OTAFieldsAppEUI_entry, msg="Message")
+bal.bind_widget(OTAFieldsAppEUI_entry, msg="exemple 70B3D5E75F600000")
 
 Label(o2, text='AppKey:').place(x=140, y=250)
 OTAFieldsAppKey_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 OTAFieldsAppKey_entry.place(x=200, y=250)
 variable_OTAFieldsAppKey_entry = StringVar()
 OTAFieldsAppKey_entry.config(textvariable=variable_OTAFieldsAppKey_entry, cursor=type_cursor, state = changeStateAllEntry)
-bal.bind_widget(OTAFieldsAppKey_entry, msg="Message")
+bal.bind_widget(OTAFieldsAppKey_entry, msg="exemple 4B7E151628AED2A6ABF7158809CF4F3C")
 
 Label(o2, text='NwkSKey:').place(x=140, y=300)
 ABPFieldsNwkSKey_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 ABPFieldsNwkSKey_entry.place(x=200, y=300)
 variable_ABPFieldsNwkSKey_entry = StringVar()
 ABPFieldsNwkSKey_entry.config(textvariable=variable_ABPFieldsNwkSKey_entry, cursor=type_cursor, state = changeStateAllEntry)
-bal.bind_widget(ABPFieldsNwkSKey_entry, msg="Message")
+bal.bind_widget(ABPFieldsNwkSKey_entry, msg="exemple 2B7E151628AED2A6ABF7158809CF4F3C")
 
 Label(o2, text='AppSKey:').place(x=140, y=325)
 ABPFieldsAppSKey_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 ABPFieldsAppSKey_entry.place(x=200, y=325)
 variable_ABPFieldsAppSKey_entry = StringVar()
 ABPFieldsAppSKey_entry.config(textvariable=variable_ABPFieldsAppSKey_entry, cursor=type_cursor, state = changeStateAllEntry)
-bal.bind_widget(ABPFieldsAppSKey_entry, msg="Message")
+bal.bind_widget(ABPFieldsAppSKey_entry, msg="exemple 4B7E151628AED2A6ABF7158809CF4F3C")
 
 buttonAddDevice = Button(o2, text='AJOUTER LE CAPTEUR', cursor="hand2", default=DISABLED, activebackground='green', state=NORMAL, command=get_GWAllowedEndDeviceFile).place(x=450, y=625)
 o2.pack()
