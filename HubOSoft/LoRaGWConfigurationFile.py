@@ -6,26 +6,19 @@
 # Description : This is the class to create a LoRa_GW_Configuration_File
 #         
 #============================================================================//
-from collections import OrderedDict
-import json
-import os
-import sys
-from tkinter import *   
 from Files_Functions import *
-import Files_Functions
-from controller import *
-from IHM import *
 import IHM
 from CONSTANTS import EMPTY_JSON_DICT_CONFIG_FILE
 from LoRaLinkFile import EMPTY_JSON_DICT_LINK_FILE, DEFAULT_LINK_FILE_NAME, JSON_LINK_START_NAME
 
 # CONSTANTS
-JSON_GW_CONF_OBJ_NAME = "LoRa_GW_Configuration_File"
+JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME = "LoRa_GW_Configuration_File"
 JSON_GW_CONF_TAB_NAME_LAN = "Lan"
 JSON_GW_CONF_TAB_NAME_WWAN = "Wwan"
 JSON_GW_CONF_TAB_NAME_TIME = "Time"
 JSON_GW_CONF_TAB_NAME_SERVICE = "Service"
 JSON_GW_CONF_TAB_NAME_DEBUG = "Debug"
+
 EMPTY_JSON_NAME_GW_CONFIGURATION = "c_010_0000.json"
 
 # Get the GW configuration file and configuration file version
@@ -87,53 +80,53 @@ def get_all_entry_and_create_JSON_GW_Conf_File():
     # Classe OrderedDict : dictionnaire qui se souvient de l'ordre dans lequel les clefs ont été insérées (clé/valeur):                   
     new_json_object = OrderedDict()
         
-    new_json_object[JSON_GW_CONF_OBJ_NAME] = OrderedDict()
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME] = OrderedDict()
         
-    new_json_object[JSON_GW_CONF_OBJ_NAME]["Version"] = VersionGW
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME]["Version"] = VersionGW
                     
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_LAN] = OrderedDict()
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_LAN]["IPFixe"] = LanIPFixe
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_LAN]["IPAddr"] = LanIPAdrr
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_LAN]["IPMask"] = LanIPMask
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_LAN]["IPGw"] = LanIPGw
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_LAN] = OrderedDict()
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_LAN]["IPFixe"] = LanIPFixe
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_LAN]["IPAddr"] = LanIPAdrr
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_LAN]["IPMask"] = LanIPMask
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_LAN]["IPGw"] = LanIPGw
                 
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN] = OrderedDict()
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["PIN"] = WwanPIN
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["PUK"] = WwanPUK
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["IPType"] = WwanIPType
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["APN"] = WwanAPN
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["APNUser"] = WwanAPNUser
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["APNPwd"] = WwanAPNPwd
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN] = OrderedDict()
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["PIN"] = WwanPIN
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["PUK"] = WwanPUK
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["IPType"] = WwanIPType
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["APN"] = WwanAPN
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["APNUser"] = WwanAPNUser
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_WWAN]["APNPwd"] = WwanAPNPwd
                 
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_TIME] = OrderedDict()
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_TIME]["SNTPServer"] = TimeSNTPServer
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_TIME]["TimeZone"] = TimeTimeZone
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_TIME] = OrderedDict()
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_TIME]["SNTPServer"] = TimeSNTPServer
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_TIME]["TimeZone"] = TimeTimeZone
                
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE] = OrderedDict()
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["DNSServer"] = ServiceDNSServer
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSUrl"] = ServicePFSUrl
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSPort"] = ServicePFSPort
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSUser"] = ServicePFSUser
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSPwd"] = ServicePFSPwd
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSDataDirectory"] = ServicePFSDataDirectory
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSConfigDirectory"] = ServicePFSConfigDirectory
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSLinkFileName"] = ServicePFSLinkFileName
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE] = OrderedDict()
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["DNSServer"] = ServiceDNSServer
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSUrl"] = ServicePFSUrl
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSPort"] = ServicePFSPort
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSUser"] = ServicePFSUser
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSPwd"] = ServicePFSPwd
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSDataDirectory"] = ServicePFSDataDirectory
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSConfigDirectory"] = ServicePFSConfigDirectory
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSLinkFileName"] = ServicePFSLinkFileName
         
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSProvisionningFileName"] = ServicePFSProvisionningFileName
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSDataFilePeriodMinutes"] = ServicePFSDataFilePeriodMinutes
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSLinkFilePeriodMinutes"] = ServicePFSLinkFilePeriodMinutes
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["EndDeviceSilenceTimeOutHours"] = ServiceEndDeviceSilenceTimeOutHours
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["FTPSUrl"] = ServiceFTPSUrl
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["FTPSPort"] = ServiceFTPSPort
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["FTPSUser"] = ServiceFTPSUser 
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["FTPSPwd"] = ServiceFTPSPwd
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSProvisionningFileName"] = ServicePFSProvisionningFileName
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSDataFilePeriodMinutes"] = ServicePFSDataFilePeriodMinutes
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["PFSLinkFilePeriodMinutes"] = ServicePFSLinkFilePeriodMinutes
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["EndDeviceSilenceTimeOutHours"] = ServiceEndDeviceSilenceTimeOutHours
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["FTPSUrl"] = ServiceFTPSUrl
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["FTPSPort"] = ServiceFTPSPort
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["FTPSUser"] = ServiceFTPSUser 
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_SERVICE]["FTPSPwd"] = ServiceFTPSPwd
                 
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG] = OrderedDict()
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG]["SSHServer"] = DebugSSHServer
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG]["SSHPort"] = DebugSSHPort
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG]["LogLevel"] = DebugLogLevel
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG]["WatchDog"] = DebugWatchDog
-    new_json_object[JSON_GW_CONF_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG]["LogUpload"] = DebugLogUpLoad
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG] = OrderedDict()
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG]["SSHServer"] = DebugSSHServer
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG]["SSHPort"] = DebugSSHPort
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG]["LogLevel"] = DebugLogLevel
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG]["WatchDog"] = DebugWatchDog
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_CONF_TAB_NAME_DEBUG]["LogUpload"] = DebugLogUpLoad
     
     return new_json_object
 

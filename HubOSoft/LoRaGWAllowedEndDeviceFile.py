@@ -6,20 +6,14 @@
 # Description : To create a list of End Device allowed
 #         
 #============================================================================//
-from collections import OrderedDict
-import json
-import os
-import sys    
 from Files_Functions import *
-import Files_Functions
 import IHM
-from IHM import *
 from LoRaLinkFile import EMPTY_JSON_DICT_LINK_FILE, DEFAULT_LINK_FILE_NAME, JSON_LINK_START_NAME
-from CONSTANTS import EMPTY_JSON_DICT_CONFIG_FILE,EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE
+from CONSTANTS import EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE
 
 # CONSTANTS
-JSON_GW_CONF_OBJ_NAME = "LoRa_GW_Allowed_End_Dev_File"
-JSON_PROV_TAB_NAME = "End_Device_Objects"
+JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME = "LoRa_GW_Allowed_End_Dev_File"
+JSON_GW_ALLOWED_END_DEVICE_TAB_NAME = "End_Device_Objects"
 EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE = "P_010_0000.json"
 
     
@@ -50,7 +44,7 @@ def get_list_EndDevice(prov_file):
     # Load the json as a json object 
     parsed_json = json.loads(json_content, object_pairs_hook=OrderedDict)
     # Get the tab containing the device objects
-    devices_tabs_json = parsed_json[JSON_GW_CONF_OBJ_NAME][JSON_PROV_TAB_NAME]
+    devices_tabs_json = parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]
     # Get the list of end-devices
     for device_object in devices_tabs_json:
         end_dev_list.append(device_object["End_Device_ID"]["DevEUI"])
@@ -123,7 +117,7 @@ def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA):
         
 # Add the json object
 def add_json_object(parsed_json, new_json_object):
-    parsed_json[JSON_GW_CONF_OBJ_NAME][JSON_PROV_TAB_NAME].append(new_json_object)
+    parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME].append(new_json_object)
         
 # Create the name of the new provisionning file
 def create_name_AllowedEndDevice_File_Name(version, server_directory):

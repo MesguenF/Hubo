@@ -16,7 +16,6 @@ from tkinter import Tk, Label, Frame, Button, Menu, ttk, Entry, Checkbutton, mes
 from tkinter.constants import DISABLED, NORMAL
 from tkinter.filedialog import SaveFileDialog, FileDialog, asksaveasfilename
 import Files_Functions
-from controller import *
 from Files_Functions import *
 from LoRaGWConfigurationFile import get_GW_config_file,\
     get_GW_config_file_version,get_all_entry_and_create_JSON_GW_Conf_File,\
@@ -28,7 +27,6 @@ from LoRaGWAllowedEndDeviceFile import get_AllowedEndDevice_File,\
     write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed
 from tkinter.tix import *
 from tkinter.tix import Balloon
-import IHM
 from IHM import *
 from CONSTANTS import INDEX_JSON_LIST
 
@@ -289,6 +287,8 @@ def get_GWAllowedEndDeviceFile():
     add_json_object(parsed_json, new_json_object)
     new_prov_file = create_name_AllowedEndDevice_File_Name(version, get_dir_name_config())
     write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed(new_prov_file,parsed_json,prov_file,get_dir_name_config())
+    
+    messagebox.showinfo(title="Information", message="Les fichiers suivants ont été créé : \n\n" + new_prov_file + "\n\nDans le dosiier : " + DIR_NAME_CONFIG)
 
 # To create a EndDeviceConfig file Json   NOT FINISH
 def get_EndDeviceConfigFile():
@@ -626,14 +626,14 @@ Label(o2, text='End_Device_Objects:').place(x=70, y=53)
 Label(o2, text='End_Device_ID:').place(x=110, y=70)
     
 Label(o2, text='DevEUI:').place(x=140, y=90)
-ENDDeviceIDDevEUI_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
+ENDDeviceIDDevEUI_entry = Entry(o2, width=30, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 ENDDeviceIDDevEUI_entry.place(x=200, y=90)
 variable_ENDDeviceIDDevEUI_entry = StringVar()
 ENDDeviceIDDevEUI_entry.config(textvariable=variable_ENDDeviceIDDevEUI_entry, state=changeStateAllEntry, cursor=type_cursor)
 bal.bind_widget(ENDDeviceIDDevEUI_entry, msg="exemple 70B3D5E75F0000D8")
     
 Label(o2, text='DevAddr:').place(x=140, y=115)
-ENDDeviceIDDevAddr_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
+ENDDeviceIDDevAddr_entry = Entry(o2, width=30, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 ENDDeviceIDDevAddr_entry.place(x=200, y=115)
 variable_ENDDeviceIDDevAddr_entry = StringVar()
 ENDDeviceIDDevAddr_entry.config(textvariable=variable_ENDDeviceIDDevAddr_entry, state=changeStateAllEntry, cursor=type_cursor)
@@ -650,7 +650,7 @@ bal.bind_widget(ASSOSInfosActivationMode_entry, msg="OTA ou ABP")
     
 Label(o2, text='Class:').place(x=140, y=180)
 ASSOSInfosClass_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
-ASSOSInfosClass_entry.place(x=200, y=180)
+ASSOSInfosClass_entry.place(x=240, y=180)
 variable_ASSOSInfosClass_entry = StringVar()
 ASSOSInfosClass_entry.config(textvariable=variable_ASSOSInfosClass_entry, state=changeStateAllEntry, cursor=type_cursor)
 bal.bind_widget(ASSOSInfosClass_entry, msg="A ou B ou C")
@@ -662,28 +662,28 @@ Label(o2, text='ABP_Fields:').place(x=110, y=275)
 button_abp = Button(o2, text='CAPTEUR ABP', cursor="hand2", default=DISABLED, activebackground='green', state = NORMAL, command = show_ABP).place(x=20, y=273)   
 
 Label(o2, text='AppEUI:').place(x=140, y=225)
-OTAFieldsAppEUI_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
+OTAFieldsAppEUI_entry = Entry(o2, width=40, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 OTAFieldsAppEUI_entry.place(x=200, y=225)
 variable_OTAFieldsAppEUI_entry = StringVar()
 OTAFieldsAppEUI_entry.config(textvariable=variable_OTAFieldsAppEUI_entry, cursor=type_cursor, state = changeStateAllEntry)
 bal.bind_widget(OTAFieldsAppEUI_entry, msg="exemple 70B3D5E75F600000")
 
 Label(o2, text='AppKey:').place(x=140, y=250)
-OTAFieldsAppKey_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
+OTAFieldsAppKey_entry = Entry(o2, width=40, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 OTAFieldsAppKey_entry.place(x=200, y=250)
 variable_OTAFieldsAppKey_entry = StringVar()
 OTAFieldsAppKey_entry.config(textvariable=variable_OTAFieldsAppKey_entry, cursor=type_cursor, state = changeStateAllEntry)
 bal.bind_widget(OTAFieldsAppKey_entry, msg="exemple 4B7E151628AED2A6ABF7158809CF4F3C")
 
 Label(o2, text='NwkSKey:').place(x=140, y=300)
-ABPFieldsNwkSKey_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
+ABPFieldsNwkSKey_entry = Entry(o2, width=40, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 ABPFieldsNwkSKey_entry.place(x=200, y=300)
 variable_ABPFieldsNwkSKey_entry = StringVar()
 ABPFieldsNwkSKey_entry.config(textvariable=variable_ABPFieldsNwkSKey_entry, cursor=type_cursor, state = changeStateAllEntry)
 bal.bind_widget(ABPFieldsNwkSKey_entry, msg="exemple 2B7E151628AED2A6ABF7158809CF4F3C")
 
 Label(o2, text='AppSKey:').place(x=140, y=325)
-ABPFieldsAppSKey_entry = Entry(o2, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
+ABPFieldsAppSKey_entry = Entry(o2, width=40, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 ABPFieldsAppSKey_entry.place(x=200, y=325)
 variable_ABPFieldsAppSKey_entry = StringVar()
 ABPFieldsAppSKey_entry.config(textvariable=variable_ABPFieldsAppSKey_entry, cursor=type_cursor, state = changeStateAllEntry)
@@ -723,7 +723,7 @@ MACInfoFPort_entry.config(textvariable=variable_MACInfoFPort_entry, state=change
 bal.bind_widget(MACInfoFPort_entry, msg="Message")
     
 Label(o3, text='FrmPayload:').place(x=140, y=155)
-MACInfoFrmPayload_entry = Entry(o3, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
+MACInfoFrmPayload_entry = Entry(o3, width=40, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 MACInfoFrmPayload_entry.place(x=210, y=155)
 variable_MACInfoFrmPayload_entry = StringVar()
 MACInfoFrmPayload_entry.config(textvariable=variable_MACInfoFrmPayload_entry, state=changeStateAllEntry, cursor=type_cursor)
