@@ -19,7 +19,7 @@ EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE = "P_010_0000.json"
     
 # Get the provisionning file and the provisionning file version
 def get_AllowedEndDevice_File(server_directory):
-    prov_file = sFGetCompleteFilenameDirectory(server_directory, "p_010" )
+    prov_file = sFGetCompleteFilenameDirectory(server_directory, "p_" )
     print("\nFound provisionning file : ", prov_file )
       
     #If no config file then create the name of a empty config file

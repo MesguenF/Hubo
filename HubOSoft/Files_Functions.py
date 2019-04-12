@@ -29,7 +29,6 @@ def sFGetCompleteFilenameDirectory(directory, file_begin ):
 	
 	# If Gateway Configuration File
 	if(file_begin == "c_010"):		
-		#If file found
 		# Look if a file like that exists in the directory
 		for file in available_files:
 			if( file[:begin_length] == file_begin):
@@ -42,14 +41,14 @@ def sFGetCompleteFilenameDirectory(directory, file_begin ):
 		
 		print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN c_010" + result_file)
 	# If Gateway AllowedEndDevice File
-	if(file_begin == "p_"):
+	if(file_begin == "p_010"):
 		# Look if a file like that exists in the directory
 		for file in available_files:
 			if( file[:begin_length] == file_begin ):
 				result_file = ( directory + file )
 				break
 		
-		print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN p_" + result_file)
+		print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN p_010" + result_file)
 		
 	return result_file
 

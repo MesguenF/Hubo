@@ -51,7 +51,7 @@ INDEX_JSON_LIST = ['<?php\n',
 #Dictionnary with data for empty LoRaGWConfigurationFile JSON
 EMPTY_JSON_DICT_CONFIG_FILE = {
     "LoRa_GW_Configuration_File": {
-        "Version": "",
+        "Version": "02.00",
         "Lan": {
             "IPFixe": "",
             "IPAddr": "",
@@ -101,7 +101,7 @@ EMPTY_JSON_DICT_CONFIG_FILE = {
 #Dictionnary with data for empty LoRaGWAllowedEndDevice JSON
 EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE = {
   "LoRa_GW_Allowed_End_Dev_File": {
-    "Version": "01.00",
+    "Version": "02.00",
     "End_Device_Objects": [
     ]
   }

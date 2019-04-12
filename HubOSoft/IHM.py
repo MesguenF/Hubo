@@ -6,16 +6,10 @@
 # Description : Graphic interface
 #         
 #============================================================================//
-from fileinput import filename
-import os
-import sys
 import shutil
-from tkinter import *
 from tkinter import Tk, Label, Frame, Button, Menu, ttk, Entry, Checkbutton, messagebox, \
     StringVar, DoubleVar, IntVar, Toplevel,BooleanVar,Pack,Place,filedialog
 from tkinter.constants import DISABLED, NORMAL
-from tkinter.filedialog import SaveFileDialog, FileDialog, asksaveasfilename
-import Files_Functions
 from Files_Functions import *
 from LoRaGWConfigurationFile import get_GW_config_file,\
     get_GW_config_file_version,get_all_entry_and_create_JSON_GW_Conf_File,\
@@ -26,8 +20,6 @@ from LoRaGWAllowedEndDeviceFile import get_AllowedEndDevice_File,\
     get_list_EndDevice, add_json_object, create_name_AllowedEndDevice_File_Name, get_all_entry_and_create_JSON_GW_AllowedEndDevice_File,\
     write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed
 from tkinter.tix import *
-from tkinter.tix import Balloon
-from IHM import *
 from CONSTANTS import INDEX_JSON_LIST
 
 #Variable to allow or deny access to entry widgets / DISABLED OR NORMAL
