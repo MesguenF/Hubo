@@ -1,6 +1,6 @@
 #============================================================================//
 # File ............: "LoRaEndDevConfigFile.py"
-# Author ..........: Frédéric MESGUEN
+# Author ..........: MESGUEN F
 # Date ............: 04/03/19
 #----------------------------------------------------------------------------//
 # Description : To create a configuration of a End Device

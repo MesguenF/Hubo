@@ -1,6 +1,6 @@
 #============================================================================//
 # File ............: "LoRaGWConfigurationFile.py"
-# Author ..........: Frédéric MESGUEN
+# Author ..........: MESGUEN F
 # Date ............: 04/03/19
 #----------------------------------------------------------------------------//
 # Description : This is the class to create a LoRa_GW_Configuration_File
