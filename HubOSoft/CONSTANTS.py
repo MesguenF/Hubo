@@ -3,13 +3,13 @@
 # Author ..........: Frédéric MESGUEN
 # Date ............: 04/03/19
 #----------------------------------------------------------------------------//
-# Description : To create a files:
+# Description : To create the files:
+#
 # - index.php
 # - empty LoRaGWConfigurationFile JSON
-# - empty LinkFile JSON
+# - empty empty LoRaGWAllowedEndDevice JSON
 #         
 #===========================================================================//
-import json
 
 #List with data for index.php
 INDEX_JSON_LIST = ['<?php\n',
@@ -98,7 +98,7 @@ EMPTY_JSON_DICT_CONFIG_FILE = {
     }
 }
 
-#Dictionnary with data for empty LoRaGWConfigurationFile JSON
+#Dictionnary with data for empty LoRaGWAllowedEndDevice JSON
 EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE = {
   "LoRa_GW_Allowed_End_Dev_File": {
     "Version": "01.00",

@@ -8,11 +8,10 @@
 #
 # 
 #============================================================================//
-from collections import OrderedDict
-import json
+# from collections import OrderedDict
+# import json
 
 # CONSTANTS
-
 # Texts for JSON
 JSON_LINK_OBJ_NAME = 'LoRa_GW_Link_File'
 JSON_LINK_TAB_NAME = 'File_Names_To_Download'

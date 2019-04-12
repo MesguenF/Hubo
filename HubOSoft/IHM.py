@@ -700,8 +700,9 @@ Label(o3, text='Version:').place(x=70, y=30)
 VersionLoRaEndDeviceConfigFile_entry = Entry(o3, width=20, disabledbackground=color_disabled_background_widgets, highlightcolor='green', highlightthickness=2)
 VersionLoRaEndDeviceConfigFile_entry.place(x=120, y=30)
 variable_VersionLoRaEndDeviceConfigFile_entry = StringVar()
+variable_VersionLoRaEndDeviceConfigFile_entry.set("02.00")
 VersionLoRaEndDeviceConfigFile_entry.config(textvariable=variable_VersionLoRaEndDeviceConfigFile_entry, state=changeStateAllEntry, cursor=type_cursor)
-bal.bind_widget(VersionLoRaEndDeviceConfigFile_entry, msg="Message")
+bal.bind_widget(VersionLoRaEndDeviceConfigFile_entry, msg="02.00 par défaut")
     
 Label(o3, text='End_Device_ID:').place(x=110, y=55)
     
@@ -711,7 +712,7 @@ ENDDEVICEIDDevEUI_entry.place(x=210, y=80)
 variable_ENDDEVICEIDDevEUI_entry = StringVar()
 ENDDEVICEIDDevEUI_entry.config(textvariable=variable_ENDDEVICEIDDevEUI_entry, state=changeStateAllEntry, cursor=type_cursor)
 bal.bind_widget(ENDDEVICEIDDevEUI_entry, msg="Message")
-    
+
 Label(o3, text='MAC_Info:').place(x=110, y=105)
     
 Label(o3, text='FPort:').place(x=140, y=130)

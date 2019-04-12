@@ -1,6 +1,6 @@
 #============================================================================//
 # File ............: "Files_Functions.py"
-# Author ..........: Armand BENETEAU
+# Author ..........: Frederic Mesguen
 # Date ............: 18/02/19
 #----------------------------------------------------------------------------//
 # Description :
@@ -50,6 +50,7 @@ def sFGetCompleteFilenameDirectory(directory, file_begin ):
 				break
 		
 		print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN p_" + result_file)
+		
 	return result_file
 
 # --------------------------------------------------
