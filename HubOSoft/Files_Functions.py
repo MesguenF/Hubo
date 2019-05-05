@@ -1,10 +1,10 @@
 #============================================================================//
 # File ............: "Files_Functions.py"
 # Author ..........: MESGUEN F
-# Date ............: 18/02/19
+# Date ............: 28/02/19
 #----------------------------------------------------------------------------//
 # Description :
-# 		Functions that can be used to manipulate the Hub'O files in a server
+# Functions that can be used to manipulate the Hub'O files in a server
 #============================================================================//
 from collections import OrderedDict
 import json

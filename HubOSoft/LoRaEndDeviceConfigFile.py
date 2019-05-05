@@ -129,12 +129,12 @@ with open(new_config_file, 'w') as resultjsonfile:
        
 print( "\nConfiguration file updated : ", new_config_file )
        
-# # Add the filename in the corresponding file
-# if( config_file != ""):
-#     vFUpdateLinkFile( IHM.DIR_NAME_CONFIG, link_file_name, config_file[-28:], new_config_file[-28:] )
-# else:
-#     vFUpdateLinkFile( IHM.DIR_NAME_CONFIG, link_file_name, new_config_file[-28:], new_config_file[-28:] )
-#       
-# print( "Link file updated : ", IHM.DIR_NAME_CONFIG + "\\" + link_file_name )
+# Add the filename in the corresponding file
+if( config_file != ""):
+    vFUpdateLinkFile( IHM.DIR_NAME_CONFIG, link_file_name, config_file[-28:], new_config_file[-28:] )
+else:
+    vFUpdateLinkFile( IHM.DIR_NAME_CONFIG, link_file_name, new_config_file[-28:], new_config_file[-28:] )
+       
+print( "Link file updated : ", IHM.DIR_NAME_CONFIG + "\\" + link_file_name )
      
      

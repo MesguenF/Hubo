@@ -3,7 +3,7 @@
 # Author ..........: MESGUEN F
 # Date ............: 04/03/19
 #----------------------------------------------------------------------------//
-# Description : This is the class to create a LoRa_GW_Configuration_File
+# Description : This is the script to create a LoRa_GW_Configuration_File
 #         
 #============================================================================//
 from Files_Functions import *

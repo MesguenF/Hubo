@@ -3,7 +3,7 @@
 # Author ..........: MESGUEN F
 # Date ............: 04/03/19
 #----------------------------------------------------------------------------//
-# Description : To create a list of End Device allowed
+# Description : This is the script to create a list of End Device allowed
 #         
 #============================================================================//
 from Files_Functions import *

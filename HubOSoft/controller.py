@@ -11,11 +11,6 @@ from IHM import *
 #boolLoopEvenement = False
  
 if __name__ == '__main__':
+    #Call IHM
     mainWindow.mainloop()
-             
-# #     while(boolLoopEvenement == False):
-#         mainWindow.mainloop()
-#         server_config_directory = get_dir_name_config()
-#         server_data_directory = get_dir_name_data()
-#         
-#         boolLoopEvenement = True
+           
