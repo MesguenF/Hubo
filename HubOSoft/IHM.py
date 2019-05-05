@@ -188,7 +188,7 @@ def change_entry_access(bool1,bool2):
 #     OTAFieldsAppKey_entry.config(state=changeStateAllEntry)
 #     ABPFieldsNwkSKey_entry.config(state=changeStateAllEntry)
 #     ABPFieldsAppSKey_entry.config(state=changeStateAllEntry)
-    ##########################  part o2 of IHM #########################  
+    ##########################  part o3 of IHM #########################  
     VersionLoRaEndDeviceConfigFile_entry.config(state=changeStateAllEntry)
     ENDDEVICEIDDevEUI_entry.config(state=changeStateAllEntry)
     MACInfoFPort_entry.config(state=changeStateAllEntry)
@@ -266,12 +266,11 @@ def get_GWConfigFile():
     # To copy the manifest file in configuration directory
     cpfich=os.path.basename("c_010.manifest")
     shutil.move("c_010.manifest",DIR_NAME_CONFIG + cpfich)
-    
+    #To display window with informations
     messagebox.showinfo(title="Information", message="Les fichiers suivants ont été créé : \n\n" + new_config_file + "\nc_010.manifest \n\nDans le dossier : " + DIR_NAME_CONFIG)
 
 # To create a allowedEndDevice file Json    NOT FINISH
 def get_GWAllowedEndDeviceFile():
-    messagebox.showinfo(title="Information", message="TEST BOUTON GW ALLOWED END DEVICE FILE")
     prov_file = get_AllowedEndDevice_File(get_dir_name_config())
     version = get_GW_config_file_version(prov_file, get_dir_name_config())
     parsed_json = get_list_EndDevice(prov_file)
@@ -279,12 +278,16 @@ def get_GWAllowedEndDeviceFile():
     add_json_object(parsed_json, new_json_object)
     new_prov_file = create_name_AllowedEndDevice_File_Name(version, get_dir_name_config())
     write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed(new_prov_file,parsed_json,prov_file,get_dir_name_config())
-    
+    #To display window with informations
     messagebox.showinfo(title="Information", message="Les fichiers suivants ont été créé : \n\n" + new_prov_file + "\n\nDans le dossier : " + DIR_NAME_CONFIG)
 
 # To create a EndDeviceConfig file Json   NOT FINISH
 def get_EndDeviceConfigFile():
     messagebox.showinfo(title="Information", message="TEST BOUTON END DEVICE CONFIG FILE")
+    prov_file = get_prov_file(get_dir_name_config())
+    get_list_EndDevice(prov_file)
+    
+    
 
 ##############GRAPHIC INTERFACE######################           
 mainWindow = Tk()
