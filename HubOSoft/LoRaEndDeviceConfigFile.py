@@ -14,6 +14,8 @@ import Files_Functions
 from Files_Functions import *
 from IHM import *
 import IHM
+from CONSTANTS import EMPTY_JSON_DICT_END_DEVICE_CONFIG_FILE
+
 
 # CONSTANTS
 JSON_PROV_OBJ_NAME = "LoRa_GW_Allowed_End_Dev_File"

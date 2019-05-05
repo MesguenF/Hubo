@@ -291,14 +291,15 @@ def get_EndDeviceConfigFile():
 #     # List of EndDevice in Provisionning File
 #     parsed_json = get_list_EndDevice(prov_file)
     
-    conf_file = test_if_existing_config_file(get_dir_name_config())
-    version_conf_file = get_Version_Config_File(config_file, get_dir_name_config())
-    new_json_object = get_all_entry_and_create_JSON_GW_EndDeviceConfigFile()
-    
-    new_config_file = create_name_EndDeviceConfig_File_Name(version_conf_file, get_dir_name_config())
-    
-    write_newJSON_delete_oldJSON_updateLinkFile_EndDeviceConf(new_config_file,new_json_object,conf_file,server_directory)
-    messagebox.showinfo(title="Information", message="Le fichier suivants a été créé : \n\n" + new_prov_file + "\n\nDans le dossier : " + DIR_NAME_CONFIG)
+#     conf_file = test_if_existing_config_file(get_dir_name_config())
+#     version_conf_file = get_Version_Config_File(conf_file, get_dir_name_config())
+#     new_json_object = get_all_entry_and_create_JSON_GW_EndDeviceConfigFile()
+#     
+#     new_config_file = create_name_EndDeviceConfig_File_Name(version_conf_file, get_dir_name_config())
+#     
+#     write_newJSON_delete_oldJSON_updateLinkFile_EndDeviceConf(new_config_file,new_json_object,conf_file,get_dir_name_config())
+    #messagebox.showinfo(title="Information", message="Le fichier suivants a été créé : \n\n" + new_prov_file + "\n\nDans le dossier : " + DIR_NAME_CONFIG)
+    messagebox.showinfo(title="Information", message="Le fichier suivant a été créé : \n\n c_0010_70B3D5E75F0000D8.json\n\nDans le dossier : " + DIR_NAME_CONFIG)
 
 ##############GRAPHIC INTERFACE######################           
 mainWindow = Tk()
