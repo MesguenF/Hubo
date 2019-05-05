@@ -267,7 +267,7 @@ def get_GWConfigFile():
     cpfich=os.path.basename("c_010.manifest")
     shutil.move("c_010.manifest",DIR_NAME_CONFIG + cpfich)
     
-    messagebox.showinfo(title="Information", message="Les fichiers suivants ont été créé : \n\n" + new_config_file + "\nc_010.manifest \n\nDans le dosiier : " + DIR_NAME_CONFIG)
+    messagebox.showinfo(title="Information", message="Les fichiers suivants ont été créé : \n\n" + new_config_file + "\nc_010.manifest \n\nDans le dossier : " + DIR_NAME_CONFIG)
 
 # To create a allowedEndDevice file Json    NOT FINISH
 def get_GWAllowedEndDeviceFile():
