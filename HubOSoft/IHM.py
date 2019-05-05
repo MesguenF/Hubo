@@ -285,18 +285,20 @@ def get_GWAllowedEndDeviceFile():
 
 # To create a EndDeviceConfig file Json
 def get_EndDeviceConfigFile():
-    prov_file = get_AllowedEndDevice_File(get_dir_name_config())
-    version_prov_file = get_AllowedEndDevice_File_version(prov_file, get_dir_name_config())
+#     prov_file = get_AllowedEndDevice_File(get_dir_name_config())
+#     version_prov_file = get_AllowedEndDevice_File_version(prov_file, get_dir_name_config())
+#     
+#     # List of EndDevice in Provisionning File
+#     parsed_json = get_list_EndDevice(prov_file)
     
-    # List of EndDevice in Provisionning File
-    parsed_json = get_list_EndDevice(prov_file)
-    
-    version_conf_file = test_if_existing_config_file(get_dir_name_config())
+    conf_file = test_if_existing_config_file(get_dir_name_config())
+    version_conf_file = get_Version_Config_File(config_file, get_dir_name_config())
     new_json_object = get_all_entry_and_create_JSON_GW_EndDeviceConfigFile()
+    
     new_config_file = create_name_EndDeviceConfig_File_Name(version_conf_file, get_dir_name_config())
     
     write_newJSON_delete_oldJSON_updateLinkFile_EndDeviceConf(new_config_file,new_json_object,conf_file,server_directory)
-    
+    messagebox.showinfo(title="Information", message="Le fichier suivants a été créé : \n\n" + new_prov_file + "\n\nDans le dossier : " + DIR_NAME_CONFIG)
 
 ##############GRAPHIC INTERFACE######################           
 mainWindow = Tk()

@@ -21,12 +21,25 @@ JSON_GW_ALLOWED_END_DEVICE_TAB_NAME = "End_Device_Objects"
 JSON_END_DEV_CONF_OBJ_NAME = "LoRa_End_Device_Config_File"
 JSON_END_DEV_CONF_TAB_NAME = "Configuration_Frames"
 
+EMPTY_JSON_NAME_END_DEVICE_CONFIGURATION = "c_0000_0000000000000000.json" #c_0000_70B3D5E75E004910
+
 #Variable for DevEUI End Device
 DevEUI=""
 
 #To return DevEUI of End Device
 def get_DevEUI_End_Device():
     return DevEUI 
+
+# # Get the GW configuration file and configuration file version
+# def get_EndDevice_config_file(server_directory):
+#     conf_file = sFGetCompleteFilenameDirectory(server_directory,"c_010")
+#               
+#     #If no config file then create the name of a empty config file
+#     if(conf_file == "ERROR"):
+#         conf_file = server_directory + EMPTY_JSON_NAME_GW_CONFIGURATION
+#         dict_in_json(server_directory, EMPTY_JSON_NAME_GW_CONFIGURATION, EMPTY_JSON_DICT_CONFIG_FILE)
+#         
+#     return conf_file
 
 # Get the list of end-devices
 def get_list_EndDevice(prov_file):
@@ -90,17 +103,14 @@ def get_all_entry_and_create_JSON_GW_EndDeviceConfigFile():
     new_json_object = OrderedDict()
     new_json_object[JSON_END_DEV_CONF_OBJ_NAME] = OrderedDict()
     new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["Version"] = IHM.VersionLoRaEndDeviceConfigFile_entry
+    
     new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["End_Device_ID"] = OrderedDict()
     new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["End_Device_ID"]["DevEUI"] = DevEUI
-    new_json_object[JSON_END_DEV_CONF_OBJ_NAME][JSON_END_DEV_CONF_TAB_NAME] = []
-           
-    for frame in pSFramesToSend:
-        tmp_json_object = OrderedDict()
-        tmp_json_object["MAC_Info"] = OrderedDict()
-        tmp_json_object["MAC_Info"]["FPort"] = frame["FPort"]
-        tmp_json_object["MAC_Info"]["FrmPayload"] = frame["FrmPayload"]
-        new_json_object[JSON_END_DEV_CONF_OBJ_NAME][JSON_END_DEV_CONF_TAB_NAME].append(tmp_json_object)
-       
+               
+    new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["MAC_Info"] = OrderedDict()
+    new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["MAC_Info"]["FPort"] = IHM.variable_MACInfoFPort_entry
+    new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["MAC_Info"]["FrmPayload"] = IHM.variable_MACInfoFrmPayload_entry
+    
     new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["Alarm_Info"] = OrderedDict()
     new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["Alarm_Info"]["Is_Alarm"] = IHM.variable_ALARMINFOIsAlarm_entry
     new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["Alarm_Info"]["Reg_Ex"] = IHM.variable_ALARMINFORegEx_entry
@@ -111,18 +121,23 @@ def get_all_entry_and_create_JSON_GW_EndDeviceConfigFile():
 # Look if there is a existing configuration file for this end-device
 def test_if_existing_config_file(server_directory):
     config_file = sFGetEndDevConfigFilename(server_directory, get_DevEUI_End_Device())
+    
     if( config_file != "" ):
-        # A configuration file is already existing for this end_device, get the version
+         # A configuration file is already existing for this end_device, get the version
         print( "\nFound configuration file : ", config_file )
-        version = int( config_file[(len(server_directory)+1+2):(len(server_directory)+1+6)] )
-        print( "Version :", version )
         # Delete the found configuration file
         os.remove(config_file)
     else:
-        version = 0
-        
-    return version    
- 
+        conf_file = server_directory + EMPTY_JSON_NAME_END_DEVICE_CONFIGURATION
+        dict_in_json(server_directory, EMPTY_JSON_NAME_END_DEVICE_CONFIGURATION, EMPTY_JSON_DICT_END_DEVICE_CONFIG_FILE)
+            
+    return config_file 
+   
+# Get the version of config_file 
+def get_Version_Config_File(config_file, server_directory):
+    version = int( config_file[(len(server_directory)+2):(len(server_directory)+6)] )
+    return version
+    
 # Create the name of the new configuration file
 def create_name_EndDeviceConfig_File_Name(version, server_directory):
     new_config_file = "c_" + (str(version+1).zfill(4)) + "_" + get_DevEUI_End_Device() + ".json"

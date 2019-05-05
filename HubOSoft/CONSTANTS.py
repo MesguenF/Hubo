@@ -106,3 +106,22 @@ EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE = {
     ]
   }
 }
+
+#Dictionnary with data for empty LoRaEndDevcieConfigurationFile JSON
+EMPTY_JSON_DICT_END_DEVICE_CONFIG_FILE = {
+  "LoRa_End_Device_Config_File": {
+    "Version": "02.00",
+    "End_Device_ID": {
+      "DevEUI": ""
+    },
+    "MAC_Info": {
+      "FPort": "",
+      "FrmPayload": ""
+    },
+    "Alarm_Info": {
+      "Is_Alarm": "",
+      "Reg_Ex": "",
+      "Act_On_Alarm": ""
+    }
+  }
+}
