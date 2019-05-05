@@ -280,7 +280,7 @@ def get_GWAllowedEndDeviceFile():
     new_prov_file = create_name_AllowedEndDevice_File_Name(version, get_dir_name_config())
     write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed(new_prov_file,parsed_json,prov_file,get_dir_name_config())
     
-    messagebox.showinfo(title="Information", message="Les fichiers suivants ont été créé : \n\n" + new_prov_file + "\n\nDans le dosiier : " + DIR_NAME_CONFIG)
+    messagebox.showinfo(title="Information", message="Les fichiers suivants ont été créé : \n\n" + new_prov_file + "\n\nDans le dossier : " + DIR_NAME_CONFIG)
 
 # To create a EndDeviceConfig file Json   NOT FINISH
 def get_EndDeviceConfigFile():
