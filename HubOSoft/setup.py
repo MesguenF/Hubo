@@ -1,10 +1,14 @@
 #============================================================================//
-# File ............: "LoRaLinkFile.py"
-# Author ..........: MESGUEN F
-# Date ............: 04/03/19
+# File ............: "setup.py"
+# Author ..........: MESGUEN Frédéric
+# Date ............: 27/03/19
 #----------------------------------------------------------------------------//
 #============================================================================//
 from cx_Freeze import setup, Executable
+import os
+ 
+os.environ['TCL_LIBRARY'] = "C:\Users\admin\AppData\Local\Programs\Python\Python37-32\tcl\tcl8.6"
+os.environ['TK_LIBRARY'] = "C:\C:\Users\admin\AppData\Local\Programs\Python\Python37-32\tcl\tk8.6"
 
 setup(
     name = "Hubo",
