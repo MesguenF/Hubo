@@ -19,6 +19,8 @@ from LoRaGWConfigurationFile import get_GW_config_file,\
 from LoRaGWAllowedEndDeviceFile import get_AllowedEndDevice_File,\
     get_list_EndDevice, add_json_object, create_name_AllowedEndDevice_File_Name, get_all_entry_and_create_JSON_GW_AllowedEndDevice_File,\
     write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed
+from LoRaEndDeviceConfigFile import *
+
 from tkinter.tix import *
 from CONSTANTS import INDEX_JSON_LIST
 
@@ -281,12 +283,19 @@ def get_GWAllowedEndDeviceFile():
     #To display window with informations
     messagebox.showinfo(title="Information", message="Les fichiers suivants ont été créé : \n\n" + new_prov_file + "\n\nDans le dossier : " + DIR_NAME_CONFIG)
 
-# To create a EndDeviceConfig file Json   NOT FINISH
+# To create a EndDeviceConfig file Json
 def get_EndDeviceConfigFile():
-    messagebox.showinfo(title="Information", message="TEST BOUTON END DEVICE CONFIG FILE")
-    prov_file = get_prov_file(get_dir_name_config())
-    get_list_EndDevice(prov_file)
+    prov_file = get_AllowedEndDevice_File(get_dir_name_config())
+    version_prov_file = get_AllowedEndDevice_File_version(prov_file, get_dir_name_config())
     
+    # List of EndDevice in Provisionning File
+    parsed_json = get_list_EndDevice(prov_file)
+    
+    version_conf_file = test_if_existing_config_file(get_dir_name_config())
+    new_json_object = get_all_entry_and_create_JSON_GW_EndDeviceConfigFile()
+    new_config_file = create_name_EndDeviceConfig_File_Name(version_conf_file, get_dir_name_config())
+    
+    write_newJSON_delete_oldJSON_updateLinkFile_EndDeviceConf(new_config_file,new_json_object,conf_file,server_directory)
     
 
 ##############GRAPHIC INTERFACE######################           

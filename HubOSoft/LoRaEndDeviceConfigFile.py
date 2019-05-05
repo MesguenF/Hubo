@@ -21,15 +21,13 @@ JSON_GW_ALLOWED_END_DEVICE_TAB_NAME = "End_Device_Objects"
 JSON_END_DEV_CONF_OBJ_NAME = "LoRa_End_Device_Config_File"
 JSON_END_DEV_CONF_TAB_NAME = "Configuration_Frames"
 
-#Variable
+#Variable for DevEUI End Device
 DevEUI=""
-    
-# Get the provisionning file
-def get_prov_file(server_directory):
-    prov_file = sFGetCompleteFilenameDirectory(server_directory , "p_" )
-    print("\nFound provisionning file : ", prov_file)
-    return prov_file
-             
+
+#To return DevEUI of End Device
+def get_DevEUI_End_Device():
+    return DevEUI 
+
 # Get the list of end-devices
 def get_list_EndDevice(prov_file):
     end_dev_list = []
@@ -46,17 +44,15 @@ def get_list_EndDevice(prov_file):
     # Get the list of end-devices
     for device_object in devices_tabs_json:
         end_dev_list.append(device_object["End_Device_ID"]["DevEUI"])
+    
      
     # Read  the list of end-devices
+    print( "\nEnd-devices found in provisionning file :" )
     for end_dev in end_dev_list:
         print(json.dumps(end_dev, indent=4))
              
     return parsed_json
-    print( "\nEnd-devices found in provisionning file :" )
-    print( "------------------------------------------" )
-    for end_dev in end_dev_list:
-        print( end_dev )
-
+    
 ####Add a end-device    
 # def get_all_entry_and_create_JSON_GW_EndDeviceConfigFile():
 #     print("DevEUI of the end-device to add ? (8 bytes)")
@@ -114,26 +110,36 @@ def get_all_entry_and_create_JSON_GW_EndDeviceConfigFile():
 
 # Look if there is a existing configuration file for this end-device
 def test_if_existing_config_file(server_directory):
-    config_file = sFGetEndDevConfigFilename(server_directory, Dev_EUI)
+    config_file = sFGetEndDevConfigFilename(server_directory, get_DevEUI_End_Device())
     if( config_file != "" ):
         # A configuration file is already existing for this end_device, get the version
         print( "\nFound configuration file : ", config_file )
-        version = int( config_file[(len(IHM.DIR_NAME_CONFIG)+1+2):(len(IHM.DIR_NAME_CONFIG)+1+6)] )
+        version = int( config_file[(len(server_directory)+1+2):(len(server_directory)+1+6)] )
         print( "Version :", version )
         # Delete the found configuration file
         os.remove(config_file)
     else:
-        version = 0     
+        version = 0
+        
+    return version    
+ 
 # Create the name of the new configuration file
-new_config_file = "c_" + (str(version+1).zfill(4)) + "_" + Dev_EUI + ".json"
-new_config_file = ( IHM.DIR_NAME_CONFIG + "\\" + new_config_file )
-       
-with open(new_config_file, 'w') as resultjsonfile:
-    # Print the json object in a file
-    json.dump(new_json_object, resultjsonfile, indent=4)
-       
-    print( "\nConfiguration file updated : ", new_config_file )
+def create_name_EndDeviceConfig_File_Name(version, server_directory):
+    new_config_file = "c_" + (str(version+1).zfill(4)) + "_" + get_DevEUI_End_Device() + ".json"
+    new_config_file = ( server_directory + new_config_file )
+    return new_config_file
 
+#Write the new json object and delete the old file
+def write_newJSON_delete_oldJSON_updateLinkFile_EndDeviceConf(new_config_file,new_json_object,conf_file,server_directory):
+    with open(new_config_file, 'w') as resultjsonfile:
+        # Print the json object in a file
+        json.dump(new_json_object, resultjsonfile, indent=4)
+        
+    print( "\nConfiguration file updated : ", new_config_file )
+    
+    #Delete the old file
+    os.remove(conf_file)
+    
     # To test if a link_file exist
     link_file_name_directory = sFGetCompleteFilenameDirectory(server_directory,JSON_LINK_START_NAME)       
     
