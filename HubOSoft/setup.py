@@ -6,11 +6,10 @@
 #============================================================================//
 from cx_Freeze import setup, Executable
 import os
-from tkinter.tix import *
+
  
-os.environ['TCL_LIBRARY'] ="C:\\Users\\admin\\AppData\\Local\\Programs\\Python\\Python37-32\\tcl\\tcl8.6"
-os.environ['TK_LIBRARY'] ="C:\\Users\\admin\\AppData\\Local\\Programs\\Python\\Python37-32\\tcl\\tk8.6"
-os.environ['TK_LIBRARY'] ="C:\\Users\\admin\\AppData\\Local\\Programs\\Python\\Python37-32\\tcl\\tix8.4.3"
+os.environ['TCL_LIBRARY'] ="C:\\Users\\admin\\AppData\\Local\\Programs\\Python\\Python37-32\\DLLs\\tcl86t.dll"
+os.environ['TK_LIBRARY'] ="C:\\Users\\admin\\AppData\\Local\\Programs\\Python\\Python37-32\\DLLs\\tk86t.dll"
 
 setup(
     name = "Hubo",
