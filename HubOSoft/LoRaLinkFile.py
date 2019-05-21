@@ -1,15 +1,11 @@
 #============================================================================//
 # File ............: "LoRaLinkFile.py"
-# Author ..........: MESGUEN F
+# Author ..........: MESGUEN Frederic
 # Date ............: 04/03/19
 #----------------------------------------------------------------------------//
-# Description : To create a files:
-#        
-#
+# Description : To create a Link file:
 # 
 #============================================================================//
-# from collections import OrderedDict
-# import json
 
 # CONSTANTS
 # Texts for JSON

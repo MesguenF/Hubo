@@ -1,6 +1,6 @@
 #============================================================================//
 # File ............: "LoRaGWAllowedEndDevFile.py"
-# Author ..........: MESGUEN F
+# Author ..........: MESGUEN Frederic
 # Date ............: 04/03/19
 #----------------------------------------------------------------------------//
 # Description : This is the script to create a list of End Device allowed
@@ -10,19 +10,21 @@ from Files_Functions import *
 import IHM
 from LoRaLinkFile import EMPTY_JSON_DICT_LINK_FILE, DEFAULT_LINK_FILE_NAME, JSON_LINK_START_NAME
 from CONSTANTS import EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE
+from IHM import *
 
 # CONSTANTS
 JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME = "LoRa_GW_Allowed_End_Dev_File"
 JSON_GW_ALLOWED_END_DEVICE_TAB_NAME = "End_Device_Objects"
-EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE = "P_010_0000.json"
+
+EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE = "p_010_0000.json"
 
     
-# Get the provisionning file and the provisionning file version
+# Get the directory and the Allowed EndDevice file
 def get_AllowedEndDevice_File(server_directory):
-    prov_file = sFGetCompleteFilenameDirectory(server_directory, "p_" )
+    prov_file = sFGetCompleteFilenameDirectory(server_directory, "p_010" )
     print("\nFound provisionning file : ", prov_file )
       
-    #If no config file then create the name of a empty config file
+    #If no provisionning file then create the name of a empty provisionning file
     if(prov_file == "ERROR"):
         prov_file = server_directory + EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE
         dict_in_json(server_directory, EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE, EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE)
@@ -35,28 +37,11 @@ def get_AllowedEndDevice_File_version(prov_file, server_directory):
     print( "Version :", version )
     return version
 
-# Get the list of end-devices
-def get_list_EndDevice(prov_file):
-    end_dev_list =  []
-    with open(prov_file, 'r') as jsonfile:
-        # Read the content of the json file
-        json_content = jsonfile.read()
-    # Load the json as a json object 
-    parsed_json = json.loads(json_content, object_pairs_hook=OrderedDict)
-    # Get the tab containing the device objects
-    devices_tabs_json = parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]
-    # Get the list of end-devices
-    for device_object in devices_tabs_json:
-        end_dev_list.append(device_object["End_Device_ID"]["DevEUI"])
-    # Read  the list of end-devices
-    for end_dev in end_dev_list:
-        print(json.dumps(end_dev, indent=4))
-    
-    return parsed_json
-   
 #Get all entry and Prepare the json object 
 def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA):
     
+    #Variables to receive the entries of interface
+    VersionGW = IHM.variable_VersionLoRaGWAllowedEndDevFile_entry.get()
     Dev_EUI = IHM.variable_ENDDeviceIDDevEUI_entry.get()
     Dev_Addr = IHM.variable_ENDDeviceIDDevAddr_entry.get()
     
@@ -67,28 +52,15 @@ def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA):
     # OTAA managed
         App_EUI = IHM.variable_OTAFieldsAppEUI_entry.get() 
         AppKey = IHM.variable_OTAFieldsAppKey_entry.get()    
-        print("DevEUI :", Dev_EUI)
-        print("DevAddr :", Dev_Addr)
-        print("Asso_Infos :", Asso_type)
-        print("Class :", Class)
-        print("AppEUI :", App_EUI)
-        print("AppKey :", AppKey)
     else:
     # ABP managed
         Nwk_S_Key = IHM.variable_ABPFieldsNwkSKey_entry.get()  
         App_S_Key = IHM.variable_ABPFieldsAppSKey_entry.get()   
-        print("DevEUI :", Dev_EUI)
-        print("DevAddr :", Dev_Addr)
-        print("Asso_Infos :", Asso_type)
-        print("Class :", Class)
-        print("NwkSKey :", Nwk_S_Key)
-        print("AppSKey :", App_S_Key)
-        
-        
     
-    #Prepare the json object
+    # To create a dictionnary for json object
+    # Classe OrderedDict : dictionnaire qui se souvient de l'ordre dans lequel les clefs ont été insérées (clé/valeur):                            
     new_json_object = OrderedDict()
-        
+    
     new_json_object["End_Device_ID"] = OrderedDict()
     new_json_object["End_Device_ID"]["DevEUI"] = Dev_EUI
     new_json_object["End_Device_ID"]["DevAddr"] = Dev_Addr
@@ -114,12 +86,38 @@ def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA):
         new_json_object["ABP_Fields"]["AppSKey"] = App_S_Key
     
     return new_json_object
-        
-# Add the json object
+
+# Get the list of End-Devices
+def get_list_EndDevice(prov_file):
+    # To create a empty list
+    end_dev_list =  []
+    
+    # To read the json file
+    with open(prov_file, 'r') as jsonfile:
+        # Read the content of the json file
+        json_content = jsonfile.read()
+    
+    # Load the json in a dictionnary as a json object 
+    parsed_json = json.loads(json_content, object_pairs_hook=OrderedDict)
+    
+    # Get the tab containing the End-Device objects
+    devices_tabs_json = parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]
+    
+    # Get the list of End-Devices
+    for device_object in devices_tabs_json:
+        end_dev_list.append(device_object["End_Device_ID"]["DevEUI"])
+    
+    # Read  the list of End-Devices
+    for end_dev in end_dev_list:
+        print(json.dumps(end_dev, indent=4))
+     
+    return parsed_json
+       
+# Add the json object in the Allowed EndDevice file
 def add_json_object(parsed_json, new_json_object):
     parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME].append(new_json_object)
         
-# Create the name of the new provisionning file
+# Create the incrementing name of the new provisionning file
 def create_name_AllowedEndDevice_File_Name(version, server_directory):
     new_prov_file = "p_010_" + (str(version+1).zfill(4)) + ".json"
     new_prov_file = (server_directory  + new_prov_file )

@@ -1,6 +1,6 @@
 #============================================================================//
 # File ............: "Files_Functions.py"
-# Author ..........: MESGUEN F
+# Author ..........: MESGUEN Frederic
 # Date ............: 28/02/19
 #----------------------------------------------------------------------------//
 # Description :
@@ -39,7 +39,7 @@ def sFGetCompleteFilenameDirectory(directory, file_begin ):
 					result_file = (directory + file)
 					break
 		
-		print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN c_010" + result_file)
+		print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN c_010\n" + result_file)
 	# If Gateway AllowedEndDevice File
 	if(file_begin == "p_010"):
 		# Look if a file like that exists in the directory
@@ -48,7 +48,7 @@ def sFGetCompleteFilenameDirectory(directory, file_begin ):
 				result_file = ( directory + file )
 				break
 		
-		print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN p_010" + result_file)
+		print("sFGetCompleteFilenameDirectory(directory +  file_begin ) RETURN p_010\n" + result_file)
 		
 	return result_file
 
