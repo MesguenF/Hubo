@@ -7,7 +7,8 @@
 #
 # - index.php
 # - empty LoRaGWConfigurationFile JSON
-# - empty empty LoRaGWAllowedEndDevice JSON
+# - empty LoRaGWAllowedEndDevice JSON
+# - empty LoRaEndDevcieConfigurationFile JSON
 #         
 #===========================================================================//
 
