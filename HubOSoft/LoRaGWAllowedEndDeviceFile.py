@@ -18,7 +18,6 @@ JSON_GW_ALLOWED_END_DEVICE_TAB_NAME = "End_Device_Objects"
 
 EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE = "p_010_0000.json"
 
-    
 # Get the directory and the Allowed EndDevice file
 def get_AllowedEndDevice_File(server_directory):
     prov_file = sFGetCompleteFilenameDirectory(server_directory, "p_010" )
@@ -43,7 +42,7 @@ def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA):
     Dev_EUI = IHM.variable_ENDDeviceIDDevEUI_entry.get()
     Dev_Addr = IHM.variable_ENDDeviceIDDevAddr_entry.get()
     
-    Asso_type = IHM.ASSOSInfosActivationMode_entry.get()
+    Asso_type = IHM.variable_ASSOSInfosActivationMode_entry.get()
     Class = IHM.variable_ASSOSInfosClass_entry.get()   
     
     if( isOTAA ):
@@ -59,57 +58,59 @@ def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA):
     # Classe OrderedDict : dictionnaire qui se souvient de l'ordre dans lequel les clefs ont été insérées (clé/valeur):                            
     new_json_object = OrderedDict()
     
-    new_json_object["End_Device_ID"] = OrderedDict()
-    new_json_object["End_Device_ID"]["DevEUI"] = Dev_EUI
-    new_json_object["End_Device_ID"]["DevAddr"] = Dev_Addr
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME]["Version"] = VersionGW
+    
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME] = OrderedDict()
+    
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["End_Device_ID"] = OrderedDict()
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["End_Device_ID"]["DevEUI"] = Dev_EUI
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["End_Device_ID"]["DevAddr"] = Dev_Addr
         
-    new_json_object["Asso_Infos"] = OrderedDict()
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["Asso_Infos"] = OrderedDict()
         
     if(isOTAA):
-        new_json_object["Asso_Infos"]["Activation_Mode"] = "OTA"
+        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["Asso_Infos"]["Activation_Mode"] = Asso_type
     else:
-        new_json_object["Asso_Infos"]["Activation_Mode"] = "ABP"
+        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["Asso_Infos"]["Activation_Mode"] = Asso_type
         
-    new_json_object["Asso_Infos"]["Class"] = Class
+    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["Asso_Infos"]["Class"] = Class
         
     if(isOTAA):
         # Create the sub-object for OTAA uniquely
-        new_json_object["OTA_Fields"] = OrderedDict()
-        new_json_object["OTA_Fields"]["AppEUI"] = App_EUI
-        new_json_object["OTA_Fields"]["AppKey"] = AppKey
+        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["OTA_Fields"] = OrderedDict()
+        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["OTA_Fields"]["AppEUI"] = App_EUI
+        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["OTA_Fields"]["AppKey"] = AppKey
     else:
         # Create the sub-object for ABP uniquely
-        new_json_object["ABP_Fields"] = OrderedDict()
-        new_json_object["ABP_Fields"]["NwkSKey"] = Nwk_S_Key
-        new_json_object["ABP_Fields"]["AppSKey"] = App_S_Key
+        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["ABP_Fields"] = OrderedDict()
+        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["ABP_Fields"]["NwkSKey"] = Nwk_S_Key
+        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["ABP_Fields"]["AppSKey"] = App_S_Key
     
     return new_json_object
 
 # Get the list of End-Devices
 def get_list_EndDevice(prov_file):
-    print(str(prov_file))
-    # To create a empty list
-    
-    end_dev_list =  []
-    
-    # To read the json file
+    # Get the list of end-devices
+    end_dev_list = []
     with open(prov_file, 'r') as jsonfile:
         # Read the content of the json file
         json_content = jsonfile.read()
-    
-        # Load the json in a dictionnary as a json object 
+            
+        # Load the json as a json object 
         parsed_json = json.loads(json_content, object_pairs_hook=OrderedDict)
         
-        # Get the tab containing the End-Device objects
+        # Get the tab containing the device objects
         devices_tabs_json = parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]
         
-        # Get the list of End-Devices
+        # Get the list of end-devices
         for device_object in devices_tabs_json:
             end_dev_list.append(device_object["End_Device_ID"]["DevEUI"])
-        
-    # Read  the list of End-Devices
+
+    print( "\nEnd-devices found in provisionning file :" )
+    print( "------------------------------------------" )
+
     for end_dev in end_dev_list:
-        print(json.dumps(end_dev, indent=4))
+        print( end_dev )
     
     return parsed_json
        

@@ -272,7 +272,9 @@ def get_GWConfigFile():
 # To create a allowedEndDevice file Json    NOT FINISH
 def get_GWAllowedEndDeviceFile():
     prov_file = get_AllowedEndDevice_File(get_dir_name_config())
+    print("1:",prov_file)
     version = get_GW_config_file_version(prov_file, get_dir_name_config())
+    print("2:",version)
     parsed_json = get_list_EndDevice(prov_file)
     new_json_object = get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(get_bool_OTA_or_ABP())
     add_json_object(parsed_json, new_json_object)
