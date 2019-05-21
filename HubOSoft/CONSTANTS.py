@@ -1,15 +1,13 @@
 #============================================================================//
 # File ............: "CONSTANTS.py"
-# Author ..........: MESGUEN F
+# Author ..........: MESGUEN Frederic
 # Date ............: 04/03/19
 #----------------------------------------------------------------------------//
 # Description : To create the files:
-#
 # - index.php
 # - empty LoRaGWConfigurationFile JSON
 # - empty LoRaGWAllowedEndDevice JSON
 # - empty LoRaEndDevcieConfigurationFile JSON
-#         
 #===========================================================================//
 
 #List with data for index.php
