@@ -24,7 +24,7 @@ def get_AllowedEndDevice_File(server_directory):
     prov_file = sFGetCompleteFilenameDirectory(server_directory, "p_010" )
     print("\nFound provisionning file : ", prov_file )
       
-    #If no provisionning file then create the name of a empty provisionning file
+    #If no provisionning file then create a empty provisionning file
     if(prov_file == "ERROR"):
         prov_file = server_directory + EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE
         dict_in_json(server_directory, EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE, EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE)
@@ -39,8 +39,6 @@ def get_AllowedEndDevice_File_version(prov_file, server_directory):
 
 #Get all entry and Prepare the json object 
 def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA):
-    
-    #Variables to receive the entries of interface
     VersionGW = IHM.variable_VersionLoRaGWAllowedEndDevFile_entry.get()
     Dev_EUI = IHM.variable_ENDDeviceIDDevEUI_entry.get()
     Dev_Addr = IHM.variable_ENDDeviceIDDevAddr_entry.get()
@@ -89,7 +87,9 @@ def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA):
 
 # Get the list of End-Devices
 def get_list_EndDevice(prov_file):
+    print(str(prov_file))
     # To create a empty list
+    
     end_dev_list =  []
     
     # To read the json file
@@ -97,20 +97,20 @@ def get_list_EndDevice(prov_file):
         # Read the content of the json file
         json_content = jsonfile.read()
     
-    # Load the json in a dictionnary as a json object 
-    parsed_json = json.loads(json_content, object_pairs_hook=OrderedDict)
-    
-    # Get the tab containing the End-Device objects
-    devices_tabs_json = parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]
-    
-    # Get the list of End-Devices
-    for device_object in devices_tabs_json:
-        end_dev_list.append(device_object["End_Device_ID"]["DevEUI"])
-    
+        # Load the json in a dictionnary as a json object 
+        parsed_json = json.loads(json_content, object_pairs_hook=OrderedDict)
+        
+        # Get the tab containing the End-Device objects
+        devices_tabs_json = parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]
+        
+        # Get the list of End-Devices
+        for device_object in devices_tabs_json:
+            end_dev_list.append(device_object["End_Device_ID"]["DevEUI"])
+        
     # Read  the list of End-Devices
     for end_dev in end_dev_list:
         print(json.dumps(end_dev, indent=4))
-     
+    
     return parsed_json
        
 # Add the json object in the Allowed EndDevice file
