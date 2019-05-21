@@ -93,11 +93,13 @@ def get_list_EndDevice(prov_file):
     # Get the list of end-devices
     end_dev_list = []
     with open(prov_file, 'r') as jsonfile:
-        # Read the content of the json file
+        # Read the content of the json file (in string)
         json_content = jsonfile.read()
+        print("json_content :" , json_content)
             
-        # Load the json as a json object 
+        # Load the json as a json object (in dict)
         parsed_json = json.loads(json_content, object_pairs_hook=OrderedDict)
+        print("parsed_json :",str(parsed_json))
         
         # Get the tab containing the device objects
         devices_tabs_json = parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]

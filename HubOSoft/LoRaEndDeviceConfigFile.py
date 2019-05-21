@@ -44,29 +44,29 @@ def get_DevEUI_End_Device():
 #     return conf_file
 
 # Get the list of end-devices
-def get_list_EndDevice(prov_file):
-    end_dev_list = []
-    with open(prov_file, 'r') as jsonfile:
-        # Read the content of the json file
-        json_content = jsonfile.read()
-     
-    # Load the json as a json object 
-    parsed_json = json.loads(json_content, object_pairs_hook=OrderedDict)
-          
-    # Get the tab containing the device objects
-    devices_tabs_json = parsed_json[JSON_PROV_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]
-          
-    # Get the list of end-devices
-    for device_object in devices_tabs_json:
-        end_dev_list.append(device_object["End_Device_ID"]["DevEUI"])
-    
-     
-    # Read  the list of end-devices
-    print( "\nEnd-devices found in provisionning file :" )
-    for end_dev in end_dev_list:
-        print(json.dumps(end_dev, indent=4))
-             
-    return parsed_json
+# def get_list_EndDevice(prov_file):
+#     end_dev_list = []
+#     with open(prov_file, 'r') as jsonfile:
+#         # Read the content of the json file
+#         json_content = jsonfile.read()
+#       
+#     # Load the json as a json object 
+#     parsed_json = json.loads(json_content, object_pairs_hook=OrderedDict)
+#            
+#     # Get the tab containing the device objects
+#     devices_tabs_json = parsed_json[JSON_PROV_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]
+#            
+#     # Get the list of end-devices
+#     for device_object in devices_tabs_json:
+#         end_dev_list.append(device_object["End_Device_ID"]["DevEUI"])
+#      
+#       
+#     # Read  the list of end-devices
+#     print( "\nEnd-devices found in provisionning file :" )
+#     for end_dev in end_dev_list:
+#         print(json.dumps(end_dev, indent=4))
+#              
+#     return parsed_json
     
 ####Add a end-device    
 # def get_all_entry_and_create_JSON_GW_EndDeviceConfigFile():
