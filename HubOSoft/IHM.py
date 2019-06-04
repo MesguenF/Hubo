@@ -54,10 +54,6 @@ def get_dir_name_config():
 def get_dir_name_data():
     return DIR_NAME_DATA
 
-#To return Data directory
-# def get_bool_OTA_or_ABP():
-#     return OTA_or_ABP
-
 # To create configuration of DATA folder ( folder LOGS + index.php)
 def create_data_sub_folder_and_index(server_directory):
     #To create Logs folder

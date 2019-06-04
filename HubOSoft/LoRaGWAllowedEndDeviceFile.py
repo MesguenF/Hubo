@@ -33,7 +33,6 @@ def get_AllowedEndDevice_File_version(prov_file, server_directory):
 
 #Get all entry and Prepare the json object 
 def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA,prov_file,version,server_directory):
-    print ("OTAA :",isOTAA)
     end_dev_list = []
     with open(prov_file, 'r') as jsonfile:
         # Read the content of the json file
