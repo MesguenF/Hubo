@@ -33,6 +33,7 @@ def get_AllowedEndDevice_File_version(prov_file, server_directory):
 
 #Get all entry and Prepare the json object 
 def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA,prov_file,version,server_directory):
+    print ("OTAA :",isOTAA)
     end_dev_list = []
     with open(prov_file, 'r') as jsonfile:
         # Read the content of the json file
@@ -68,14 +69,14 @@ def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA,prov_file,vers
         
     new_json_object["Asso_Infos"] = OrderedDict()
         
-    if(isOTAA):
+    if(isOTAA == "OTA"):
         new_json_object["Asso_Infos"]["Activation_Mode"] = Asso_type
     else:
         new_json_object["Asso_Infos"]["Activation_Mode"] = Asso_type
         
     new_json_object["Asso_Infos"]["Class"] = Class
         
-    if(isOTAA):
+    if(isOTAA == "OTA"):
         # Create the sub-object for OTAA uniquely
         new_json_object["OTA_Fields"] = OrderedDict()
         new_json_object["OTA_Fields"]["AppEUI"] = IHM.variable_OTAFieldsAppEUI_entry.get() 

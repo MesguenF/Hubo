@@ -42,8 +42,8 @@ DIR_NAME_DATA = ""
 bool_config_directory = False
 bool_data_directory = False
 
-# Boolean variable to choose OTA or ABP End Device
-bool_OTA_or_ABP = False
+# Variable to choose OTA or ABP End Device
+OTA_or_ABP = ""
 
 ###################################################
 #To return Configuration directory
@@ -55,8 +55,8 @@ def get_dir_name_data():
     return DIR_NAME_DATA
 
 #To return Data directory
-def get_bool_OTA_or_ABP():
-    return bool_OTA_or_ABP
+# def get_bool_OTA_or_ABP():
+#     return OTA_or_ABP
 
 # To create configuration of DATA folder ( folder LOGS + index.php)
 def create_data_sub_folder_and_index(server_directory):
@@ -231,7 +231,7 @@ def ask_OK_Cancel():
 
 # To enable OTA and disable ABP       
 def show_OTA():
-    bool_OTA_or_ABP = True
+    OTA_or_ABP = "OTA"
     OTAFieldsAppEUI_entry.config(state=NORMAL)
     OTAFieldsAppKey_entry.config(state=NORMAL)
     ASSOSInfosActivationMode_entry.delete (0, len(ASSOSInfosActivationMode_entry.get()))
@@ -239,18 +239,18 @@ def show_OTA():
     ABPFieldsAppSKey_entry.selection_clear()
     ABPFieldsNwkSKey_entry.config(state=DISABLED)
     ABPFieldsAppSKey_entry.config(state=DISABLED)
-    return bool_OTA_or_ABP
+    return OTA_or_ABP
 
 # To enable ABP and disable OTA 
 def show_ABP():
-    bool_OTA_or_ABP = False
+    OTA_or_ABP = "ABP"
     ABPFieldsNwkSKey_entry.config(state=NORMAL)
     ABPFieldsAppSKey_entry.config(state=NORMAL)
     ASSOSInfosActivationMode_entry.delete (0, len(ASSOSInfosActivationMode_entry.get()))
     ASSOSInfosActivationMode_entry.insert(0,"ABP")
     OTAFieldsAppEUI_entry.config(state=DISABLED)
     OTAFieldsAppKey_entry.config(state=DISABLED)
-    return bool_OTA_or_ABP
+    return OTA_or_ABP
     
 # To create the GW configuration Json
 def get_GWConfigFile():
@@ -279,21 +279,15 @@ def get_GWConfigFile():
 def get_GWAllowedEndDeviceFile():
     #To get the provissionning file
     prov_file = get_AllowedEndDevice_File(get_dir_name_config())
-    print("The provisionning file directory and name :",prov_file)
-    
     #To get the version of provisionning file
     version = get_AllowedEndDevice_File_version(prov_file, get_dir_name_config())
-    print("The provisionning version :",version)
-    
     #To get the new_json_object to add
-    parsed_json = get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(get_bool_OTA_or_ABP(),prov_file,version,get_dir_name_config())
-     
+    parsed_json = get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(IHM.variable_ASSOSInfosActivationMode_entry.get(),prov_file,version,get_dir_name_config())
     #To create the new provisionning file
     new_prov_file = create_name_AllowedEndDevice_File_Name(version, get_dir_name_config())
-
     #To write the new JSON file     
     write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed(new_prov_file,parsed_json,prov_file,get_dir_name_config())
-#     #To display window with informations
+    #To display window with informations
     messagebox.showinfo(title="Information", message="Les fichiers suivants ont été créé : \n\n" + new_prov_file + "\n\nDans le dossier : " + DIR_NAME_CONFIG)
 
 # To create a EndDeviceConfig file Json
@@ -337,7 +331,8 @@ n.pack()
 
 ###EVENEMENTS####
 mainWindow.bind("<Button-1>", show_Info_Folders)
-mainWindow.bind("<Key>", show_Info_Folders("<Key>"))
+mainWindow.bind("<Key>", show_Info_Folders)
+#mainWindow.bind("<Key>", show_Info_Folders("<Key>"))
 mainWindow.protocol("WM_DELETE_WINDOW", ask_OK_Cancel)
     
 ################################################################################################
