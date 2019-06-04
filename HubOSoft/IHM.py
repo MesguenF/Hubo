@@ -17,7 +17,7 @@ from LoRaGWConfigurationFile import get_GW_config_file,\
     write_newJSON_delete_oldJSON_updateLinkFile_GW_Conf
     
 from LoRaGWAllowedEndDeviceFile import get_AllowedEndDevice_File,\
-    get_list_EndDevice, add_json_object, create_name_AllowedEndDevice_File_Name, get_all_entry_and_create_JSON_GW_AllowedEndDevice_File,\
+    create_name_AllowedEndDevice_File_Name, get_all_entry_and_create_JSON_GW_AllowedEndDevice_File,\
     write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed,get_AllowedEndDevice_File_version
 from LoRaEndDeviceConfigFile import *
 from tkinter.tix import *
@@ -37,6 +37,10 @@ DIR_NAME_CONFIG = ""
 
 #Variable for data folder directory
 DIR_NAME_DATA = ""
+
+#Variables for enable entry access 
+bool_config_directory = False
+bool_data_directory = False
 
 # Boolean variable to choose OTA or ABP End Device
 bool_OTA_or_ABP = False
@@ -95,8 +99,8 @@ def ask_ConfigFolder_Directory():
                 messagebox.showinfo(title="Information", message="Le dossier pour les configurations n'a pas été modifié.\nLe dossier pour les configurations est le suivant :" + DIR_NAME_CONFIG)
     
     # To initialyse bool_data_directory
-    if(DIR_NAME_DATA == ""):
-        bool_data_directory = False
+#     if(DIR_NAME_DATA == ""):
+#         bool_data_directory = False
     # To enable access if OK          
     change_entry_access(bool_config_directory,bool_data_directory)
 
@@ -133,8 +137,8 @@ def ask_DataFolder_Directory():
                 messagebox.showinfo(title="Information", message="Le dossier pour les configurations n'a pas été modifié.\n Le dossier pour les configurations est le suivant :" + DIR_NAME_DATA)
     
     # To initialyse bool_config_directory
-    if(DIR_NAME_CONFIG == ""):
-        bool_config_directory = False
+#     if(DIR_NAME_CONFIG == ""):
+#         bool_config_directory = False
     # To enable access if OK          
     change_entry_access(bool_config_directory,bool_data_directory)
     
@@ -271,32 +275,39 @@ def get_GWConfigFile():
 
 # To create a allowedEndDevice file Json    NOT FINISH
 def get_GWAllowedEndDeviceFile():
+    #To get the provissionning file
     prov_file = get_AllowedEndDevice_File(get_dir_name_config())
-    print("1:",prov_file)
-    version = get_GW_config_file_version(prov_file, get_dir_name_config())
-    print("2:",version)
-    parsed_json = get_list_EndDevice(prov_file)
-    new_json_object = get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(get_bool_OTA_or_ABP())
-    add_json_object(parsed_json, new_json_object)
+    print("The provisionning file directory and name :",prov_file)
+    
+    #To get the version of provisionning file
+    version = get_AllowedEndDevice_File_version(prov_file, get_dir_name_config())
+    print("The provisionning version :",version)
+    
+    #To get the new_json_object to add
+    parsed_json = get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(get_bool_OTA_or_ABP(),prov_file,version,get_dir_name_config())
+     
+    #To create the new provisionning file
     new_prov_file = create_name_AllowedEndDevice_File_Name(version, get_dir_name_config())
+
+    #To write the new JSON file     
     write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed(new_prov_file,parsed_json,prov_file,get_dir_name_config())
-    #To display window with informations
+#     #To display window with informations
     messagebox.showinfo(title="Information", message="Les fichiers suivants ont été créé : \n\n" + new_prov_file + "\n\nDans le dossier : " + DIR_NAME_CONFIG)
 
 # To create a EndDeviceConfig file Json
 def get_EndDeviceConfigFile():
-    prov_file = get_AllowedEndDevice_File(get_dir_name_config())
-    version_prov_file = get_AllowedEndDevice_File_version(prov_file, get_dir_name_config())
-      
-    # List of EndDevice in Provisionning File
-#     parsed_json = get_list_EndDevice(prov_file)
-#      
-#     conf_file = test_if_existing_config_file(get_dir_name_config())
+    #prov_file = get_AllowedEndDevice_File(get_dir_name_config())
+    #version_prov_file = get_AllowedEndDevice_File_version(prov_file, get_dir_name_config())
+    #parsed_json = get_list_EndDevice(prov_file)
+    #conf_file = test_if_existing_config_file(get_dir_name_config())
+    #new_json_object = get_all_entry_and_create_JSON_GW_EndDeviceConfigFile()
+    get_all_entry_and_create_JSON_GW_EndDeviceConfigFile(get_dir_name_config())
+    #get_Version_Config_File(conf_file, get_dir_name_config())
 #     version_conf_file = get_Version_Config_File(conf_file, get_dir_name_config())
-#     new_json_object = get_all_entry_and_create_JSON_GW_EndDeviceConfigFile()
-#       
+#    
+#        
 #     new_config_file = create_name_EndDeviceConfig_File_Name(version_conf_file, get_dir_name_config())
-#       
+#        
 #     write_newJSON_delete_oldJSON_updateLinkFile_EndDeviceConf(new_config_file,new_json_object,conf_file,get_dir_name_config())
 #     messagebox.showinfo(title="Information", message="Le fichier suivants a été créé : \n\n" + new_prov_file + "\n\nDans le dossier : " + DIR_NAME_CONFIG)
 #     messagebox.showinfo(title="Information", message="Le fichier suivant a été créé : \n\n c_0010_70B3D5E75F0000D8.json\n\nDans le dossier : " + DIR_NAME_CONFIG)

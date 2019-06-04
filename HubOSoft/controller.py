@@ -8,7 +8,6 @@
 #===========================================================================//
 from IHM import *
 
-#boolLoopEvenement = False
  
 if __name__ == '__main__':
     #Call IHM

@@ -15,95 +15,32 @@ from IHM import *
 # CONSTANTS
 JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME = "LoRa_GW_Allowed_End_Dev_File"
 JSON_GW_ALLOWED_END_DEVICE_TAB_NAME = "End_Device_Objects"
-
 EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE = "p_010_0000.json"
 
 # Get the directory and the Allowed EndDevice file
 def get_AllowedEndDevice_File(server_directory):
     prov_file = sFGetCompleteFilenameDirectory(server_directory, "p_010" )
-    print("\nFound provisionning file : ", prov_file )
-      
     #If no provisionning file then create a empty provisionning file
     if(prov_file == "ERROR"):
         prov_file = server_directory + EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE
         dict_in_json(server_directory, EMPTY_JSON_NAME_GW_ALLOWEDENDDEVICE, EMPTY_JSON_DICT_ALLOWEDENDEVICE_FILE)
-    print( "\nFound provisionning file : ", prov_file )    
     return prov_file
 
 # Get the Allowed EndDevice file version
 def get_AllowedEndDevice_File_version(prov_file, server_directory):
     version = int( prov_file[(len(server_directory)+6):(len(server_directory)+10)] )
-    print( "Version :", version )
     return version
 
 #Get all entry and Prepare the json object 
-def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA):
-    VersionGW = IHM.variable_VersionLoRaGWAllowedEndDevFile_entry.get()
-    Dev_EUI = IHM.variable_ENDDeviceIDDevEUI_entry.get()
-    Dev_Addr = IHM.variable_ENDDeviceIDDevAddr_entry.get()
-    
-    Asso_type = IHM.variable_ASSOSInfosActivationMode_entry.get()
-    Class = IHM.variable_ASSOSInfosClass_entry.get()   
-    
-    if( isOTAA ):
-    # OTAA managed
-        App_EUI = IHM.variable_OTAFieldsAppEUI_entry.get() 
-        AppKey = IHM.variable_OTAFieldsAppKey_entry.get()    
-    else:
-    # ABP managed
-        Nwk_S_Key = IHM.variable_ABPFieldsNwkSKey_entry.get()  
-        App_S_Key = IHM.variable_ABPFieldsAppSKey_entry.get()   
-    
-    # To create a dictionnary for json object
-    # Classe OrderedDict : dictionnaire qui se souvient de l'ordre dans lequel les clefs ont été insérées (clé/valeur):                            
-    new_json_object = OrderedDict()
-    
-    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME]["Version"] = VersionGW
-    
-    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME] = OrderedDict()
-    
-    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["End_Device_ID"] = OrderedDict()
-    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["End_Device_ID"]["DevEUI"] = Dev_EUI
-    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["End_Device_ID"]["DevAddr"] = Dev_Addr
-        
-    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["Asso_Infos"] = OrderedDict()
-        
-    if(isOTAA):
-        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["Asso_Infos"]["Activation_Mode"] = Asso_type
-    else:
-        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["Asso_Infos"]["Activation_Mode"] = Asso_type
-        
-    new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["Asso_Infos"]["Class"] = Class
-        
-    if(isOTAA):
-        # Create the sub-object for OTAA uniquely
-        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["OTA_Fields"] = OrderedDict()
-        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["OTA_Fields"]["AppEUI"] = App_EUI
-        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["OTA_Fields"]["AppKey"] = AppKey
-    else:
-        # Create the sub-object for ABP uniquely
-        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["ABP_Fields"] = OrderedDict()
-        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["ABP_Fields"]["NwkSKey"] = Nwk_S_Key
-        new_json_object[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]["ABP_Fields"]["AppSKey"] = App_S_Key
-    
-    return new_json_object
-
-# Get the list of End-Devices
-def get_list_EndDevice(prov_file):
-    # Get the list of end-devices
+def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA,prov_file,version,server_directory):
     end_dev_list = []
     with open(prov_file, 'r') as jsonfile:
-        # Read the content of the json file (in string)
+        # Read the content of the json file
         json_content = jsonfile.read()
-        print("json_content :" , json_content)
-            
-        # Load the json as a json object (in dict)
+        # Load the json as a json object 
         parsed_json = json.loads(json_content, object_pairs_hook=OrderedDict)
-        print("parsed_json :",str(parsed_json))
-        
         # Get the tab containing the device objects
         devices_tabs_json = parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]
-        
         # Get the list of end-devices
         for device_object in devices_tabs_json:
             end_dev_list.append(device_object["End_Device_ID"]["DevEUI"])
@@ -114,11 +51,55 @@ def get_list_EndDevice(prov_file):
     for end_dev in end_dev_list:
         print( end_dev )
     
-    return parsed_json
-       
-# Add the json object in the Allowed EndDevice file
-def add_json_object(parsed_json, new_json_object):
+    #VersionGW = IHM.variable_VersionLoRaGWAllowedEndDevFile_entry.get()
+    Dev_EUI = IHM.variable_ENDDeviceIDDevEUI_entry.get()
+    Dev_Addr = IHM.variable_ENDDeviceIDDevAddr_entry.get()
+    Asso_type = IHM.variable_ASSOSInfosActivationMode_entry.get()
+    Class = IHM.variable_ASSOSInfosClass_entry.get()   
+    
+# To create a dictionnary for json object
+# Classe OrderedDict : dictionnaire qui se souvient de l'ordre 
+#dans lequel les clefs ont été insérées (clé/valeur):                            
+    new_json_object = OrderedDict()
+                
+    new_json_object["End_Device_ID"] = OrderedDict()
+    new_json_object["End_Device_ID"]["DevEUI"] = Dev_EUI
+    new_json_object["End_Device_ID"]["DevAddr"] = Dev_Addr
+        
+    new_json_object["Asso_Infos"] = OrderedDict()
+        
+    if(isOTAA):
+        new_json_object["Asso_Infos"]["Activation_Mode"] = Asso_type
+    else:
+        new_json_object["Asso_Infos"]["Activation_Mode"] = Asso_type
+        
+    new_json_object["Asso_Infos"]["Class"] = Class
+        
+    if(isOTAA):
+        # Create the sub-object for OTAA uniquely
+        new_json_object["OTA_Fields"] = OrderedDict()
+        new_json_object["OTA_Fields"]["AppEUI"] = IHM.variable_OTAFieldsAppEUI_entry.get() 
+        new_json_object["OTA_Fields"]["AppKey"] = IHM.variable_OTAFieldsAppKey_entry.get() 
+    else:
+        # Create the sub-object for ABP uniquely
+        new_json_object["ABP_Fields"] = OrderedDict()
+        new_json_object["ABP_Fields"]["NwkSKey"] = IHM.variable_ABPFieldsNwkSKey_entry.get()
+        new_json_object["ABP_Fields"]["AppSKey"] = IHM.variable_ABPFieldsAppSKey_entry.get()
+    
+    ##A FAIRE TEST SI DEV EUI DEJA DANS LA LISTE,SUPPRESIION SI C'EST LE CAS
+    # Look for the end-device to delete
+    index = 0
+    devEUI_found = False
+    for dict_element in parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]:
+        if( dict_element["End_Device_ID"]["DevEUI"] == Dev_EUI ):
+            del parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME][index]
+            devEUI_found = True
+            break
+        index = index + 1
+        
     parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME].append(new_json_object)
+    
+    return parsed_json
         
 # Create the incrementing name of the new provisionning file
 def create_name_AllowedEndDevice_File_Name(version, server_directory):
@@ -127,15 +108,12 @@ def create_name_AllowedEndDevice_File_Name(version, server_directory):
     return new_prov_file
 
 #Write the new json object and delete the old file
-def write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed(new_prov_file,new_json_object,prov_file,server_directory):
+def write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed(new_prov_file,parsed_json,prov_file,server_directory):
     with open(new_prov_file, 'w') as resultjsonfile:
         # Print the json object in a file
-        json.dump(new_json_object, resultjsonfile, indent=4)
-             
+        json.dump(parsed_json, resultjsonfile, indent=4)
     # Delete the old file
     os.remove(prov_file)
-    print( "\nProvisionning file updated : ", new_prov_file )
-     
     # To test if a link_file exist
     link_file_name_directory = sFGetCompleteFilenameDirectory(server_directory,JSON_LINK_START_NAME)
          
@@ -149,5 +127,3 @@ def write_newJSON_delete_oldJSON_updateLinkFile_GW_Allowed(new_prov_file,new_jso
          
     # Add the filename in the corresponding file
     vFUpdateLinkFile(server_directory, link_file_name_directory, prov_file[-15:], new_prov_file[-15:] )
-          
-    print( "Link file updated : ", server_directory + link_file_name )
