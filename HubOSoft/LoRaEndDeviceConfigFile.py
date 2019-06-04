@@ -16,7 +16,6 @@ from IHM import *
 import IHM
 from CONSTANTS import EMPTY_JSON_DICT_END_DEVICE_CONFIG_FILE
 
-
 # CONSTANTS
 JSON_PROV_OBJ_NAME = "LoRa_GW_Allowed_End_Dev_File"
 JSON_GW_ALLOWED_END_DEVICE_TAB_NAME = "End_Device_Objects"
@@ -43,65 +42,9 @@ def get_EndDevice_config_file(server_directory, DevEUI):
          
     return conf_file
 
-# Get the list of end-devices
-# def get_list_EndDevice(prov_file):
-#     end_dev_list = []
-#     with open(prov_file, 'r') as jsonfile:
-#         # Read the content of the json file
-#         json_content = jsonfile.read()
-#       
-#     # Load the json as a json object 
-#     parsed_json = json.loads(json_content, object_pairs_hook=OrderedDict)
-#            
-#     # Get the tab containing the device objects
-#     devices_tabs_json = parsed_json[JSON_PROV_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME]
-#            
-#     # Get the list of end-devices
-#     for device_object in devices_tabs_json:
-#         end_dev_list.append(device_object["End_Device_ID"]["DevEUI"])
-#      
-#       
-#     # Read  the list of end-devices
-#     print( "\nEnd-devices found in provisionning file :" )
-#     for end_dev in end_dev_list:
-#         print(json.dumps(end_dev, indent=4))
-#              
-#     return parsed_json
-    
-####Add a end-device    
-# def get_all_entry_and_create_JSON_GW_EndDeviceConfigFile():
-#     print("DevEUI of the end-device to add ? (8 bytes)")
-#     Dev_EUI = IHM.variable_ENDDeviceIDDevEUI_entry
-#     # While loop to get all the payloads that the user wants to sent
-#     ucFrameNb = 0
-#     bKeepLooping = True
-#     pSFramesToSend = []
-#     while( ( ucFrameNb < 5 ) and bKeepLooping ):
-#         # Get the payload
-#         print("\nPayload to send to end-Device", Dev_EUI, "?")
-#         SPayload = IHM.variable_MACInfoFrmPayload_entry
-#         
-#         # Get the FPort
-#         print("\nFPort to used ?")
-#         SFPort = IHM.variable_MACInfoFPort_entry
-#         # Save inside the list
-#         pSFramesToSend.append( {"FPort":int(SFPort), "FrmPayload":SPayload} )
-#         
-#         # Increment the counter
-#         ucFrameNb = ucFrameNb + 1
-#         
-#         # Ask the user if he wants to send another frame (if less than 5 frames saved)
-#         if( ucFrameNb < 5 ):
-#             print("\nDo you want to send another frame ? (Y/N)")
-#             SAnswer = input("\n>> ")
-#             if( (SAnswer[0] == 'N') or (SAnswer[0] == 'n') ):
-#                 bKeepLooping = False
-
-       
 ####Add a end-device    
 def get_all_entry_and_create_JSON_GW_EndDeviceConfigFile(server_directory):
       
-    
     DevEUI = IHM.variable_ENDDeviceIDDevEUI_entry.get()
     # Create the JSON object that will allow to set the file
     new_json_object = OrderedDict()
@@ -119,8 +62,6 @@ def get_all_entry_and_create_JSON_GW_EndDeviceConfigFile(server_directory):
     new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["Alarm_Info"]["Is_Alarm"] = IHM.variable_ALARMINFOIsAlarm_entry.get()
     new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["Alarm_Info"]["Reg_Ex"] = IHM.variable_ALARMINFORegEx_entry.get()
     new_json_object[JSON_END_DEV_CONF_OBJ_NAME]["Alarm_Info"]["Act_On_Alarm"] = IHM.variable_ALARMINFOActOnAlarm_entry.get()
-    
-    #return new_json_object
     
     # Look if there is a existing configuration file for this end-device
     config_file = sFGetEndDevConfigFilename(server_directory, DevEUI)

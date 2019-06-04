@@ -86,7 +86,6 @@ def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA,prov_file,vers
         new_json_object["ABP_Fields"]["NwkSKey"] = IHM.variable_ABPFieldsNwkSKey_entry.get()
         new_json_object["ABP_Fields"]["AppSKey"] = IHM.variable_ABPFieldsAppSKey_entry.get()
     
-    ##A FAIRE TEST SI DEV EUI DEJA DANS LA LISTE,SUPPRESIION SI C'EST LE CAS
     # Look for the end-device to delete
     index = 0
     devEUI_found = False
@@ -94,14 +93,13 @@ def get_all_entry_and_create_JSON_GW_AllowedEndDevice_File(isOTAA,prov_file,vers
         if( dict_element["End_Device_ID"]["DevEUI"] == Dev_EUI ):
             del parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME][index]
             devEUI_found = True
-            break
         index = index + 1
         
     parsed_json[JSON_GW_ALLOWED_END_DEVICE_OBJ_NAME][JSON_GW_ALLOWED_END_DEVICE_TAB_NAME].append(new_json_object)
     
     return parsed_json
         
-# Create the incrementing name of the new provisionning file
+#Create the incrementing name of the new provisionning file
 def create_name_AllowedEndDevice_File_Name(version, server_directory):
     new_prov_file = "p_010_" + (str(version+1).zfill(4)) + ".json"
     new_prov_file = (server_directory  + new_prov_file )

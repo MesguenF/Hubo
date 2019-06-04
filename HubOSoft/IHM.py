@@ -254,7 +254,9 @@ def show_ABP():
     
 # To create the GW configuration Json
 def get_GWConfigFile():
+    #To get the configuration file
     conf_file = get_GW_config_file(get_dir_name_config())
+    #To get the version of configuration file
     version = get_GW_config_file_version(conf_file,get_dir_name_config())
     new_json_object = get_all_entry_and_create_JSON_GW_Conf_File()
     new_config_file = create_name_config_file(version)

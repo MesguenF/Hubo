@@ -37,16 +37,14 @@ def sFGetCompleteFilenameDirectory(directory, file_begin ):
 				print("AFFICHAGE DE file : " , file)
 				if(file != 'c_010.manifest'):
 					result_file = (directory + file)
-					break
-		
-	# If Gateway AllowedEndDevice File
+					
+	#If Gateway AllowedEndDevice File
 	if(file_begin == "p_010"):
 		# Look if a file like that exists in the directory
 		for file in available_files:
 			if( file[:begin_length] == file_begin ):
 				result_file = ( directory + file )
-				break
-		
+				
 	return result_file
 
 # --------------------------------------------------
@@ -70,9 +68,7 @@ def sFGetEndDevConfigFilename(directory, DevEUI ):
 		if( file[:2] == "c_" ):
 			if( file.find(DevEUI) != -1 ): 
 				result_file = ( directory + file )
-				#result_file = ( directory + "\\" + file )
-				break
-	
+				
 	return result_file
 	
 # --------------------------------------------------
@@ -90,12 +86,9 @@ def vFUpdateLinkFile(directory, link_file_name_directory, old_file, new_file ):
  	
 	full_link_name = link_file_name_directory
 	print("full_link_name : " + full_link_name)
-# 	
+	
 # First, get the full link file name
-# 	full_link_name = ( directory + link_file_name_directory )
-# 	#full_link_name = ( directory + "\\" + link_file_name_directory )
-# 	print("full_link_name : " + full_link_name)
-# 	
+
 	# Get the current filenames inside the link file
 	with open(full_link_name, 'r') as jsonfile:
 		# Read the content of the json file
@@ -109,7 +102,6 @@ def vFUpdateLinkFile(directory, link_file_name_directory, old_file, new_file ):
 	for dict_element in parsed_json[JSON_LINK_OBJ_NAME][JSON_LINK_TAB_NAME]:
 		if( dict_element["File_Name"] == old_file ):
 			del parsed_json[JSON_LINK_OBJ_NAME][JSON_LINK_TAB_NAME][index]
-			break
 		index = index + 1
  	
 	# Add the new file name
