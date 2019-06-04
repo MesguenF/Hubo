@@ -65,6 +65,7 @@ def get_all_entry_and_create_JSON_GW_EndDeviceConfigFile(server_directory):
     
     # Look if there is a existing configuration file for this end-device
     config_file = sFGetEndDevConfigFilename(server_directory, DevEUI)
+    print ("config_file : ",config_file)
 
     if( config_file != "" ):
         # A configuration file is already existing for this end_device, get the version

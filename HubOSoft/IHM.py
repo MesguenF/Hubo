@@ -25,23 +25,17 @@ from CONSTANTS import INDEX_JSON_LIST
 
 #Variable to allow or deny access to entry widgets / DISABLED OR NORMAL
 changeStateAllEntry = DISABLED # DISABLED OR NORMAL
-
 #Variable color for entry widgets focus
 color_disabled_background_widgets = 'light grey'
-
 #Variable for cursor type
 type_cursor ="hand2"
-
 #Variable for configuration folder directory
 DIR_NAME_CONFIG = ""
-
 #Variable for data folder directory
 DIR_NAME_DATA = ""
-
 #Variables for enable entry access 
 bool_config_directory = False
 bool_data_directory = False
-
 # Variable to choose OTA or ABP End Device
 OTA_or_ABP = ""
 
